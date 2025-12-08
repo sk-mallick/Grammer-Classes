@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Grammar Tense Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#000000',      // Pure Black
+                            card: '#111111',    // Near Black
+                            hover: '#222222',   // Dark Gray
+                            border: '#333333',  // Dark Gray Border
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #000000; /* Pure Black for high contrast */
+            color: #ffffff;
+        }
+        
+        /* Button Animations */
+        .option-btn {
+            transition: transform 0.1s ease, background-color 0.2s ease;
+        }
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* High Visibility Correct/Wrong Styles */
+        .correct {
+            background-color: #00b300 !important; /* Vivid Green matching reference */
+            border-color: #00b300 !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 15px rgba(0, 179, 0, 0.4);
+        }
+        .correct .opt-letter {
+            color: #ffffff !important; /* Letter turns white on correct background */
+        }
+        
+        .wrong {
+            background-color: #dc2626 !important; /* Vivid Red */
+            border-color: #dc2626 !important;
+            color: #ffffff !important;
+        }
+        .wrong .opt-letter {
+            color: #ffffff !important;
+        }
+
+        /* Custom scrollbar for select dropdown */
+        select option {
+            background-color: #111111;
+            color: #ffffff;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body class="pb-20 min-h-screen">
+
+    <!-- Sticky Header -->
+    <header class="sticky top-0 z-50 bg-[#111111] shadow-xl border-b border-gray-800">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0">
+            <!-- Title -->
+            <div class="flex items-center gap-3">
+                
+                <h1 class="text-lg md:text-xl font-bold text-lime-400 tracking-wide">Grammar<span class="text-cyan-400"> Quiz</span></h1>
+            </div>
+            
+            <!-- Controls -->
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <!-- Group Selector -->
+                <div class="relative w-full sm:w-64">
+                    <select id="group-select" onchange="renderQuiz()" class="w-full appearance-none bg-black text-white border border-gray-700 hover:border-cyan-500 px-3 py-2 pr-8 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-cyan-500 transition-colors text-sm font-medium cursor-pointer">
+                        <option value="0">Set 1 (Q1 - Q10)</option>
+                        <option value="1">Set 2 (Q11 - Q20)</option>
+                        <option value="2">Set 3 (Q21 - Q30)</option>
+                        <option value="3">Set 4 (Q31 - Q40)</option>
+                        <option value="4">Set 5 (Q41 - Q50)</option>
+                        <option value="5">Set 6 (Q51 - Q60)</option>
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Quiz Container -->
+    <main id="quiz-container" class="max-w-4xl mx-auto px-4 py-4 md:py-6 space-y-4 md:space-y-6">
+        <!-- Questions will be injected here by JS -->
+    </main>
+
+    <script>
+        const quizData = [
+            { q: "Only one of the boys ……………….. not done the home-work given yesterday.", options: ["have", "had", "can", "could"], answer: 1 }, // had
+            { q: "It is time we .......………….. with determination.", options: ["act", "acted", "have acted", "will act"], answer: 1 }, // acted
+            { q: "When the thief entered the house, the inmates ................ in the hall.", options: ["were sleeping", "slept", "were slept", "had been sleeping"], answer: 0 }, // were sleeping
+            { q: "The thief explained how he ……………………. from the jail.", options: ["escapes", "had escaped", "escaped", "has escaped"], answer: 1 }, // had escaped
+            { q: "They did not know where they …………….… from.", options: ["come", "had come", "has come", "had came"], answer: 1 }, // had come
+            { q: "Madhu has not been able to recall where …………………………..", options: ["does she live", "she lived", "did she live", "lived the girl"], answer: 1 }, // she lived
+            { q: "When he died, Ramanujan ………………………. behind 3 notebooks.", options: ["was leaving", "had left", "leave", "leaves"], answer: 1 }, // had left
+            { q: "All the applicants …………… and the results will be announced next week.", options: ["rank", "are to rank", "are to be ranked", "are ranking"], answer: 2 }, // are to be ranked
+            { q: "Tourists always enjoyed ………………….. the setting Sun in the Darjeeling hills.", options: ["to watch", "watching", "in seeing", "seeing"], answer: 1 }, // watching (enjoy + gerund)
+            { q: "Ramappa ……………………… as the mayor of the town and he will assume charge this Friday.", options: ["elects", "has been elected", "is elected", "is electing"], answer: 1 }, // has been elected
+            { q: "Just as in a family it is the willing cooperation of its members that ……………… happiness and contentment, so is it in the larger family of the nation.", options: ["brought", "will bring", "bring", "bought"], answer: 1 }, // will bring
+            { q: "The old man could not remember where he ......... his money.", options: ["deposits", "is depositing", "had deposited", "will deposit"], answer: 2 }, // had deposited
+            { q: "Hamid …………………….. in Mumbai for three years when his parents came to visit.", options: ["had lived", "had lived", "was living", "had been living"], answer: 3 }, // had been living
+            { q: "Two years have passed since he ………………………. here.", options: ["has come", "come", "came", "had come"], answer: 2 }, // came
+            { q: "Will those of you who have objections to this proposal………. put up your hands, please?", options: ["discussed", "being discussed", "having discussed", "discussing"], answer: 1 }, // being discussed
+            { q: "She had frequent toothaches. So she decided to …………………………", options: ["remove her teeth", "removing her teeth", "have her teeth removed", "having her teeth removed"], answer: 2 }, // have her teeth removed
+            { q: "The mechanic …………………….. the vehicle since this morning.", options: ["repaired", "repairing", "has been repairing", "will be repairing"], answer: 2 }, // has been repairing
+            { q: "If I had worked here, I ………………….. very high marks in the examination.", options: ["scored", "would score", "could score", "would have scored"], answer: 3 }, // would have scored
+            { q: "I got used ……………………… on the right when I was in the U.S. for two years.", options: ["driving", "to drive", "to driving", "by driving"], answer: 2 }, // to driving
+            { q: "Had you told me earlier I …………………….. the meeting.", options: ["had attended", "have attended", "attended", "would have attended"], answer: 3 }, // would have attended
+            { q: "There will be a rush for seats when the train …………………………...", options: ["will arrive", "arrived", "is arriving", "arrives"], answer: 3 }, // arrives
+            { q: "By the time I reach America, it ……………………. morning.", options: ["is", "will have become", "must be", "was"], answer: 1 }, // will have become
+            { q: "She feared that she……………………………..", options: ["will fail", "may fail", "fails", "failed"], answer: 1 }, // may fail
+            { q: "I was washing my face as the insect .................... quietly into the bedroom.", options: ["crept", "creeps", "was creeping", "has crept"], answer: 0 }, // crept
+            { q: "During the recent floods two thirds of our city …………….... in ruins.", options: ["are", "were", "is", "was"], answer: 3 }, // was
+            { q: "I have ……………………….. Lakshmi for the past twelve years.", options: ["know", "knew", "known", "knows"], answer: 2 }, // known
+            { q: "The engineers ………………………. this bridge since last year.", options: ["have repaired", "had repaired", "have been repairing", "are repairing"], answer: 2 }, // have been repairing
+            { q: "If I had helped him, he …………………", options: ["will not be drowned", "would not be drowned", "will not have drowned", "would not have drowned"], answer: 3 }, // would not have drowned
+            { q: "The housewife ……………………. cakes burning, and ran to switch off the oven.", options: ["smell", "smells", "smelt", "smelling"], answer: 2 }, // smelt
+            { q: "If you had followed the rules, you………………………. disqualified.", options: ["will not be", "would not be", "will not have been", "would not have been"], answer: 3 }, // would not have been
+            { q: "The farmers …………….. their farms, if they had known that a thunderstorm was approaching.", options: ["will leave", "would leave", "will have left", "would have left"], answer: 3 }, // would have left
+            { q: "………………… you hear the President’s speech ?", options: ["Have", "Has", "Had", "Did"], answer: 3 }, // Did
+            { q: "I …………………… to the movies with some friends last night.", options: ["have gone", "went", "am gone", "am going"], answer: 1 }, // went
+            { q: "If I ………………………. a doctor, I would serve the poor,", options: ["am", "had been", "were", "was"], answer: 2 }, // were
+            { q: "The plane will take off when the thunderstorm ……………………….", options: ["stops", "stopped", "would stop", "will stop"], answer: 0 }, // stops
+            { q: "When the doctor………………………….; the patient was already……………………………..", options: ["arrived; died", "arrived; dead", "arrive; dead", "arriving; dying"], answer: 1 }, // arrived; dead
+            { q: "If you litter, you………………………. to pay a fine.", options: ["will have", "would have", "will had", "would had"], answer: 0 }, // will have
+            { q: "The life-guard would not let the children………………… at the deep end of the pool.", options: ["swims", "swim", "swam", "to swim"], answer: 1 }, // swim
+            { q: "The audience watched the clowns…………………………..", options: ["performs", "perform", "performed", "are performing"], answer: 1 }, // perform
+            { q: "We shall go for a picnic if the weather……………………..good.", options: ["is", "was", "has been", "had been"], answer: 0 }, // is
+            { q: "I …………………. hard to establish the validity of the theory since morning.", options: ["have been trying", "had tried", "tried", "am trying"], answer: 0 }, // have been trying
+            { q: "I wish I ………………………… her to clean the room.", options: ["have asking", "have asked", "asked", "had asked"], answer: 3 }, // had asked
+            { q: "Simon …………………….. very polite at the moment, because he wants to make a good impression.", options: ["was being", "has been", "is behaving", "is being"], answer: 3 }, // is being
+            { q: "Had I saved money, I ………………………….. a new car.", options: ["will purchase", "would purchase", "would have purchased", "purchased"], answer: 2 }, // would have purchased
+            { q: "He told me that he ……………………… the movie.", options: ["is finished", "was finished", "had finished", "not finished"], answer: 2 }, // had finished
+            { q: "The railway coaches …………………………. by the Integral Coach Factory, Chennai.", options: ["is manufactured", "are manufactured", "are manufacture", "is being manufactured"], answer: 1 }, // are manufactured
+            { q: "The car broke down and we …………………… get a taxi.", options: ["were to", "are to", "had to", "have to"], answer: 2 }, // had to
+            { q: "He said I …………………. use his car when ever I wanted.", options: ["could", "can", "will", "would"], answer: 0 }, // could
+            { q: "While he was working at the site, a block of wood suddenly ………… his right shoulder.", options: ["was hitted", "was hit", "had hitted", "hit"], answer: 3 }, // hit
+            { q: "In the tragic incident, none of the 145 passengers ……………………….", options: ["could survived", "survive", "survived", "is surviving"], answer: 2 }, // survived
+            { q: "I asked him for some paper, but he ……………………..", options: ["had not", "has not", "had none", "has none"], answer: 2 }, // had none
+            { q: "Did the child ………………….. from the chair?", options: ["fell", "fallen", "falling", "fall"], answer: 3 }, // fall
+            { q: "Work hard so that you …………………………. (Purpose)", options: ["shall get good marks", "will get good marks", "may get good marks", "should get good marks"], answer: 2 }, // may get
+            { q: "The officer …………………. the car to speak to the driver.", options: ["stops", "has stopped", "stopped", "had stopped"], answer: 2 }, // stopped
+            { q: "Thank God! We reached. If there .......... jam on the highway, we would have been late for the reception.", options: ["had been", "would have been", "was", "were"], answer: 0 }, // had been
+            { q: "If you ............ me up earlier, we would have gone there together.", options: ["woke", "had woken", "wake", "wakes"], answer: 1 }, // had woken
+            { q: "Last night the residents .............. to discuss the occurrence of theft in the locality.", options: ["assembled", "had assembled", "have assembled", "were assembling"], answer: 0 }, // assembled
+            { q: "The students decided to donate blood after they ............ the plight of the injured in various accidents in a documentary film.", options: ["saw", "had seen", "had been seen", "had been seeing"], answer: 1 }, // had seen
+            { q: "The newspaper ............ seven cases of gruesome crime in the city yesterday.", options: ["reported", "has reported", "had reported", "have reported"], answer: 0 }, // reported
+            { q: "An enquiry committee has been formed as devastating poverty and indebtedness .............. farmers in the country to commit suicide.", options: ["forced", "has forced", "force", "forces"], answer: 1 } // has forced
+        ];
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            const groupIndex = parseInt(document.getElementById('group-select').value);
+            const itemsPerGroup = 10;
+            const start = groupIndex * itemsPerGroup;
+            const end = start + itemsPerGroup;
+            const currentQuestions = quizData.slice(start, end);
+            
+            container.innerHTML = '';
+
+            currentQuestions.forEach((item, i) => {
+                const absIndex = start + i;
+                
+                const questionCard = document.createElement('div');
+                questionCard.className = "bg-[#111111] rounded-xl border border-gray-800 overflow-hidden mb-4 md:mb-6";
+                
+                // Question Header
+                const qHeader = document.createElement('div');
+                // Matching the image reference: Red numbers, Green text
+                qHeader.className = "bg-black px-4 py-3 md:px-6 md:py-4 border-b border-gray-800 flex gap-3 md:gap-4 items-start";
+                
+                const qNum = document.createElement('span');
+                // Vivid Red for the number
+                qNum.className = "font-bold text-red-500 text-lg md:text-2xl whitespace-nowrap mt-0.5";
+                qNum.textContent = `${absIndex + 1}.`;
+                
+                const qText = document.createElement('p');
+                // Bright Lime/Green for the text
+                qText.className = "text-[#84cc16] font-bold text-lg md:text-2xl leading-relaxed tracking-wide";
+                qText.textContent = item.q;
+
+                qHeader.appendChild(qNum);
+                qHeader.appendChild(qText);
+
+                // Options Container
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = "p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4";
+
+                item.options.forEach((opt, optIndex) => {
+                    const btn = document.createElement('button');
+                    const letters = ['A.', 'B.', 'C.', 'D.'];
+                    
+                    // Dark Gray background for options, Cyan for letters
+                    btn.className = `option-btn w-full text-left px-4 py-3 md:px-5 md:py-4 rounded-lg md:rounded-xl border border-gray-700 text-white font-medium text-base md:text-xl bg-[#1f1f1f] hover:bg-[#2a2a2a] hover:border-gray-500 focus:outline-none relative overflow-hidden group flex items-center`;
+                    
+                    btn.innerHTML = `
+                        <span class="opt-letter text-cyan-400 font-bold text-lg md:text-2xl mr-3 shrink-0">${letters[optIndex]}</span>
+                        <span class="flex-1">${opt}</span>
+                    `;
+                    
+                    // Pass the container and correct index to logic
+                    btn.onclick = (e) => checkAnswer(e.currentTarget, optIndex, item.answer, optionsDiv);
+                    
+                    optionsDiv.appendChild(btn);
+                });
+
+                questionCard.appendChild(qHeader);
+                questionCard.appendChild(optionsDiv);
+                container.appendChild(questionCard);
+            });
+            
+            window.scrollTo(0, 0);
+        }
+
+        function checkAnswer(clickedBtn, selectedIndex, correctIndex, container) {
+            const allButtons = container.querySelectorAll('button');
+
+            // Reset all buttons
+            allButtons.forEach(btn => {
+                btn.classList.remove('correct', 'wrong');
+                btn.classList.add('bg-[#1f1f1f]', 'border-gray-700', 'text-white');
+                // Reset Letter color
+                const letter = btn.querySelector('.opt-letter');
+                letter.classList.remove('text-white');
+                letter.classList.add('text-cyan-400');
+            });
+
+            if (selectedIndex === correctIndex) {
+                styleButtonAsCorrect(clickedBtn);
+            } else {
+                styleButtonAsWrong(clickedBtn);
+            }
+        }
+
+        function styleButtonAsCorrect(btn) {
+            btn.classList.remove('bg-[#1f1f1f]', 'border-gray-700', 'hover:bg-[#2a2a2a]', 'hover:border-gray-500');
+            btn.classList.add('correct');
+            // Make letter white when selected
+            const letter = btn.querySelector('.opt-letter');
+            letter.classList.remove('text-cyan-400');
+            letter.classList.add('text-white');
+        }
+
+        function styleButtonAsWrong(btn) {
+            btn.classList.remove('bg-[#1f1f1f]', 'border-gray-700', 'hover:bg-[#2a2a2a]', 'hover:border-gray-500');
+            btn.classList.add('wrong');
+            // Make letter white when selected
+            const letter = btn.querySelector('.opt-letter');
+            letter.classList.remove('text-cyan-400');
+            letter.classList.add('text-white');
+        }
+
+        renderQuiz();
+
+    </script>
+</body>
+</html>

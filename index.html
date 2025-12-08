@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        studio: {
+                            black: '#000000',
+                            card: '#111111',
+                            gold: '#FFD700',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            background-image: radial-gradient(circle at 50% 50%, #111111 0%, #000000 100%);
+        }
+
+        .version-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .version-card:hover {
+            transform: translateY(-5px);
+            border-color: #FFD700;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
+        }
+
+        .version-card:active {
+            transform: scale(0.98);
+        }
+
+        .icon-circle {
+            transition: all 0.3s ease;
+        }
+        
+        .version-card:hover .icon-circle {
+            background-color: #FFD700;
+            color: #000000;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+
+    <!-- Header -->
+    <div class="text-center mb-12">
+        <div class="inline-block mb-4">
+            <div class="w-16 h-2 bg-[#FFD700] rounded-full mx-auto shadow-[0_0_15px_#FFD700]"></div>
+        </div>
+        <h1 class="text-5xl md:text-6xl font-black tracking-tight mb-2 text-white">
+            QUIZ<span class="text-[#FFD700]">HUB</span>
+        </h1>
+        <p class="text-gray-400 text-lg font-medium tracking-wide">Select a quiz version to begin</p>
+    </div>
+
+    <!-- Links Container -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
+
+        <!-- Version 1 -->
+        <a href="1-60 MCQ (v1).html" class="version-card group block bg-[#111111] border-2 border-[#333333] rounded-2xl p-8 text-center cursor-pointer no-underline">
+            <div class="icon-circle w-16 h-16 rounded-full bg-[#222222] text-[#FFD700] border-2 border-[#333333] flex items-center justify-center mx-auto mb-6 text-2xl font-black group-hover:border-[#FFD700]">
+                V1
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-2 group-hover:text-[#FFD700] transition-colors">Version 1</h2>
+            <p class="text-gray-500 font-medium">Standard Quiz</p>
+        </a>
+
+        <!-- Version 2 -->
+        <a href="1-60 MCQ (v2).html" class="version-card group block bg-[#111111] border-2 border-[#333333] rounded-2xl p-8 text-center cursor-pointer no-underline">
+            <div class="icon-circle w-16 h-16 rounded-full bg-[#222222] text-[#FFD700] border-2 border-[#333333] flex items-center justify-center mx-auto mb-6 text-2xl font-black group-hover:border-[#FFD700]">
+                V2
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-2 group-hover:text-[#FFD700] transition-colors">Version 2</h2>
+            <p class="text-gray-500 font-medium">Alternative Set</p>
+        </a>
+
+        <!-- Version 3 -->
+        <a href="1-60 MCQ (v3).html" class="version-card group block bg-[#111111] border-2 border-[#333333] rounded-2xl p-8 text-center cursor-pointer no-underline">
+            <div class="icon-circle w-16 h-16 rounded-full bg-[#222222] text-[#FFD700] border-2 border-[#333333] flex items-center justify-center mx-auto mb-6 text-2xl font-black group-hover:border-[#FFD700]">
+                V3
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-2 group-hover:text-[#FFD700] transition-colors">Version 3</h2>
+            <p class="text-gray-500 font-medium">Latest Update</p>
+        </a>
+
+    </div>
+
+    <footer class="mt-16 text-gray-600 font-medium text-sm">
+        &copy; Web Designed by Subham Kumar Mallick
+    </footer>
+
+</body>
+</html>
