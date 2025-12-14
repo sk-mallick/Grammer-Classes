@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Subject-Verb Agreement Quiz</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+            rel="stylesheet">
+        <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+        <style>
+        body {
+            background-color: #020617; /* Deep Midnight Blue */
+            color: #f8fafc; /* White Text */
+        }
+
+        /* Responsive Columns with Divider */
+        .quiz-columns {
+            column-count: 1;
+        }
+        @media (min-width: 1024px) {
+            .quiz-columns {
+                column-count: 2;
+                column-gap: 3rem; /* Adjusted gap for wider layout */
+            }
+        }
+
+        /* Fixed Dash Styling */
+        .blank-space {
+            display: inline-block;
+            width: 60px; /* Fixed width dash */
+            height: 1.2em;
+            border-bottom: 3px solid #64748b; /* Visible line */
+            position: relative;
+            margin: 0 5px;
+            cursor: pointer;
+            vertical-align: bottom;
+            transition: border-color 0.2s;
+        }
+
+        .blank-space:hover {
+            border-bottom-color: #fbbf24; /* Amber on hover */
+        }
+
+        /* Answer Text Positioning - Floating Above */
+        .blank-space span.answer-text {
+            position: absolute;
+            bottom: 2px; /* Sits just above the line */
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap; /* Prevents breaking the line */
+            font-size: 0.9em;
+            font-weight: 800;
+            color: #34d399; /* Emerald Green */
+            opacity: 0; /* Hidden initially */
+            pointer-events: none;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Pop against background */
+            /* Add transition for smooth hiding */
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        /* Reveal Animation */
+        .blank-space.revealed span.answer-text {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            animation: slideUp 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+        }
+
+        .blank-space.revealed {
+            border-bottom-color: #34d399; /* Line turns green too */
+        }
+
+        @keyframes slideUp {
+            0% { transform: translate(-50%, 10px); opacity: 0; }
+            100% { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        .hint-text {
+            color: #94a3b8;
+            font-size: 0.7em;
+            margin-left: 6px;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        select option {
+            background-color: #0f172a;
+            color: #f8fafc;
+            padding: 10px;
+        }
+        
+        /* Progress Bar Animation */
+        #progress-fill {
+            transition: width 0.3s ease-out;
+        }
+    </style>
+    </head>
+    <body
+        class="min-h-screen pb-12 selection:bg-blue-500 selection:text-white pt-[116px]">
+        <!-- Added top padding to account for fixed header + progress -->
+
+        <!-- Header Wrapper (Fixed) -->
+        <div class="fixed top-0 left-0 w-full z-50">
+            <header
+                class="bg-[#020617]/95 backdrop-blur shadow-xl border-b border-slate-800">
+                <!-- Increased width to 95% for maximum space usage -->
+                <div
+                    class="w-[95%] max-w-[1920px] mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+                    <!-- Title Section -->
+                    <div
+                        class="flex items-stretch gap-4 self-start sm:self-center">
+                        <!-- Vertical Line covering both lines -->
+                        <div
+                            class="w-1.5 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] self-stretch"></div>
+
+                        <div class="flex flex-col">
+                            <h1
+                                class="text-xl md:text-2xl font-black tracking-wide text-white uppercase leading-none">
+                                SYNTAX <span
+                                    class="text-blue-400">PRACTICE</span>
+                            </h1>
+                            <p
+                                class="text-xs md:text-sm font-bold text-slate-400 tracking-[0.15em] mt-1 uppercase leading-tight">
+                                By Chiranjibi Sir
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div
+                        class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                        <div class="relative group">
+                            <select id="paper-select" onchange="renderQuiz()"
+                                class="appearance-none bg-slate-900 text-slate-100 border border-slate-700 hover:border-blue-400 pl-4 pr-10 py-2 rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all cursor-pointer w-auto shadow-sm">
+                                <option value="1">Set 1 (15 Qs)</option>
+                                <option value="2">Set 2 (15 Qs)</option>
+                                <option value="3">Set 3 (15 Qs)</option>
+                                <option value="4">Set 4 (15 Qs)</option>
+                                <option value="5">Set 5 (15 Qs)</option>
+                                <option value="6">Set 6 (15 Qs)</option>
+                                <option value="7">Set 7 (15 Qs)</option>
+                                <option value="8">Set 8 (15 Qs)</option>
+                                <option value="10">Set 10 (15 Qs)</option>
+                                <option value="11">Set 11 (15 Qs)</option>
+                                <option value="12">Set 12 (15 Qs)</option>
+                                <option value="13">Set 13 (21 Qs)</option>
+                            </select>
+                            <div
+                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400 group-hover:text-blue-400 transition-colors">
+                                <svg class="fill-current h-4 w-4"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20"><path
+                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Progress Bar -->
+            <div class="w-full h-1.5 bg-slate-800">
+                <div id="progress-fill"
+                    class="h-full bg-gradient-to-r from-blue-500 to-emerald-400 w-0 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+            </div>
+        </div>
+
+        <!-- Quiz Container -->
+        <!-- Reduced py-6 to py-4 -->
+        <main id="quiz-container"
+            class="w-[95%] max-w-[1920px] mx-auto px-4 py-4 quiz-columns">
+            <!-- Questions will be injected here by JS -->
+        </main>
+
+        <!-- Watermark -->
+        <div
+            class="fixed bottom-3 w-full text-center pointer-events-none select-none z-0">
+            <p
+                class="text-slate-600 opacity-40 text-[10px] font-bold tracking-[0.2em] uppercase">
+                Designed by Subham Kumar Mallick
+            </p>
+        </div>
+
+        <script>
+        // Data Structure
+        const papers = {
+            "1": [
+                { q: "One of the pupils in our class ______ a car.", options: ["own", "owns"], answer: 1 },
+                { q: "The Lions of the East ______ an interesting book.", options: ["is", "are"], answer: 0 },
+                { q: "Apple pie and custard ______ my favourite dish.", options: ["is", "are"], answer: 0 },
+                { q: "Ten kilometres ______ a long way to walk.", options: ["is", "are"], answer: 0 },
+                { q: "Mohan, as well as Sohan, ______ guilty.", options: ["was", "were"], answer: 0 },
+                { q: "Neither John nor you ______ present.", options: ["was", "were"], answer: 1 },
+                { q: "Either Shobha or I ______ to blame.", options: ["is", "am"], answer: 1 },
+                { q: "Neither of them ______ wrong.", options: ["was", "were"], answer: 0 },
+                { q: "The council ______ chosen its president.", options: ["has", "have"], answer: 0 },
+                { q: "Two and two ______ four.", options: ["make", "makes"], answer: 1 },
+                { q: "The cost of all these articles ______ high.", options: ["has", "have"], answer: 0 },
+                { q: "All the students in our college ______ English.", options: ["learn", "learns"], answer: 0 },
+                { q: "The quality of the mangoes ______ not good.", options: ["was", "were"], answer: 0 },
+                { q: "Each of these minerals ______ found in India.", options: ["is", "are"], answer: 0 },
+                { q: "Iron, as well as coal, ______ found in India.", options: ["is", "are"], answer: 0 }
+            ],
+            "2": [
+                { q: "No news ______ good news.", options: ["is", "are"], answer: 0 },
+                { q: "The great poet and dramatist ______ dead.", options: ["is", "are"], answer: 0 },
+                { q: "The orator and statesman ______ dead.", options: ["is", "are"], answer: 0 },
+                { q: "Neither of the films ______ good.", options: ["was", "were"], answer: 0 },
+                { q: "The king, with all his ministers, ______ present there.", options: ["was", "were"], answer: 0 },
+                { q: "Every man, woman, and child in the village ______ wounded.", options: ["was", "were"], answer: 0 },
+                { q: "Rice and curry ______ his favourite food.", options: ["is", "are"], answer: 0 },
+                { q: "He is one of the greatest leaders that ever ______.", options: ["has", "have"], answer: 1 },
+                { q: "A number of students ______ caught copying.", options: ["was", "were"], answer: 1 },
+                { q: "The boy and the girl ______ to the same college.", options: ["go", "goes"], answer: 0 },
+                { q: "The orator and the statesman ______ arrived.", options: ["has", "have"], answer: 1 },
+                { q: "Many of the students ______ failed in the examination.", options: ["has", "have"], answer: 1 },
+                { q: "Most of the students ______ their time.", options: ["waste", "wastes"], answer: 0 },
+                { q: "A large number of workers ______ struck work.", options: ["has", "have"], answer: 1 },
+                { q: "He and his friend ______ arrived.", options: ["has", "have"], answer: 1 }
+            ],
+            "3": [
+                { q: "The Arabian Nights ______ still a great favourite book.", options: ["is", "are"], answer: 0 },
+                { q: "Mathematics ______ an important subject.", options: ["is", "are"], answer: 0 },
+                { q: "Politics ______ his chief interest.", options: ["is", "are"], answer: 0 },
+                { q: "The committee ______ chosen their chairman.", options: ["has", "have"], answer: 1 },
+                { q: "A hundred kilometres ______ a good distance.", options: ["is", "are"], answer: 0 },
+                { q: "Veena, and not you, ______ won the prize.", options: ["has", "have"], answer: 0 },
+                { q: "Mr. Thakur, as well as his wife and his brother-in-law, ______ hot curry.", options: ["like", "likes"], answer: 1 },
+                { q: "A thousand rupees ______ a big sum.", options: ["is", "are"], answer: 0 },
+                { q: "Each of her rooms ______ to let.", options: ["is", "are"], answer: 0 },
+                { q: "Each day and each hour ______ its duty.", options: ["bring", "brings"], answer: 1 },
+                { q: "The horse and carriage ______ at the door.", options: ["is", "are"], answer: 0 },
+                { q: "My friend and benefactor ______ come to see me.", options: ["has", "have"], answer: 0 },
+                { q: "The house, with its contents, ______ insured against fire.", options: ["was", "were"], answer: 0 },
+                { q: "Everybody ______ happy at the picnic.", options: ["is", "are"], answer: 0 },
+                { q: "______ either of the twins present?", options: ["was", "were"], answer: 0 }
+            ],
+            "4": [
+                { q: "The jury ______ divided in their opinions.", options: ["was", "were"], answer: 1 },
+                { q: "This is the only one of his stories that ______ worth reading.", options: ["is", "are"], answer: 0 },
+                { q: "Two third of the town ______ in ruins.", options: ["is", "are"], answer: 0 },
+                { q: "The long and the short of the matter ______ this.", options: ["is", "are"], answer: 0 },
+                { q: "A list of weak boys in our school ______ published.", options: ["has", "have"], answer: 0 },
+                { q: "Three parts of the business ______ in my hands.", options: ["is", "are"], answer: 1 },
+                { q: "Every inch of the field ______ searched.", options: ["was", "were"], answer: 0 },
+                { q: "None of the thieves ______ been arrested.", options: ["has", "have"], answer: 1 },
+                { q: "Anybody ______ welcomed.", options: ["is", "are"], answer: 0 },
+                { q: "Rain ______ from the sky.", options: ["fall", "falls"], answer: 1 },
+                { q: "The sun ______ in the west.", options: ["set", "sets"], answer: 1 },
+                { q: "There ______ an egg on the plate.", options: ["is", "are"], answer: 0 },
+                { q: "Binay and Mukesh ______ clever boys.", options: ["is", "are"], answer: 1 },
+                { q: "Manoj, the tallest of all the students in our class, ______ clever.", options: ["is", "are"], answer: 0 },
+                { q: "______ these children's mother ill?", options: ["is", "are"], answer: 0 }
+            ],
+            "5": [
+                { q: "A year ______ twelve months.", options: ["has", "have"], answer: 0 },
+                { q: "The little girl _______ walking down the street carrying her doll.", options: ["is", "are"], answer: 0 },
+                { q: "You, he, and I ______ friends.", options: ["am", "are"], answer: 1 },
+                { q: "The wages of sin ______ death.", options: ["is", "are"], answer: 0 },
+                { q: "The police ______ caught the robber.", options: ["has", "have"], answer: 1 },
+                { q: "All the furniture ______ costly.", options: ["is", "are"], answer: 0 },
+                { q: "A band of musicians ______ to arrive.", options: ["is", "are"], answer: 0 },
+                { q: "A lot of money ______ been spent.", options: ["has", "have"], answer: 0 },
+                { q: "Ship after ship ______ sailing by.", options: ["was", "were"], answer: 0 },
+                { q: "The colour of these flowers ______ charming.", options: ["is", "are"], answer: 0 },
+                { q: "The water of these rivers ______ not fresh.", options: ["is", "are"], answer: 0 },
+                { q: "A team of players ______ arrived.", options: ["has", "have"], answer: 0 },
+                { q: "Half of the mango ______ rotten.", options: ["was", "were"], answer: 0 },
+                { q: "Half of the mangoes ______ rotten.", options: ["was", "were"], answer: 1 },
+                { q: "Your trousers ______ new.", options: ["is", "are"], answer: 1 }
+            ],
+            "6": [
+                { q: "A pair of trousers ______ been sewed.", options: ["has", "have"], answer: 0 },
+                { q: "The people of my village ______ laborious.", options: ["is", "are"], answer: 1 },
+                { q: "A number of students ______ come.", options: ["has", "have"], answer: 1 },
+                { q: "The number of students ______ fifty.", options: ["is", "are"], answer: 0 },
+                { q: "Forty miles ______ a long distance.", options: ["is", "are"], answer: 0 },
+                { q: "The percentage of success ______ very high.", options: ["is", "are"], answer: 0 },
+                { q: "Measles ______ a dangerous disease.", options: ["is", "are"], answer: 0 },
+                { q: "The poor ______ laborious.", options: ["is", "are"], answer: 1 },
+                { q: "Many a criminal ______ been arrested.", options: ["has", "have"], answer: 0 },
+                { q: "None of the students ______ come.", options: ["has", "have"], answer: 0 },
+                { q: "A few teachers ______ laborious.", options: ["is", "are"], answer: 1 },
+                { q: "One of them ______ a robber.", options: ["is", "are"], answer: 0 },
+                { q: "Each and every pen ______ red.", options: ["is", "are"], answer: 0 },
+                { q: "Each girl ______ an instrument box.", options: ["has", "have"], answer: 0 },
+                { q: "Everyone of us ______ a traitor.", options: ["is", "are"], answer: 0 }
+            ],
+            "7": [
+                { q: "Nothing but trees ______ visible.", options: ["is", "are"], answer: 0 },
+                { q: "Not only the principal but also the teachers ______ responsible.", options: ["is", "are"], answer: 1 },
+                { q: "A criminal with all his followers ______ arrested.", options: ["was", "were"], answer: 0 },
+                { q: "A herd of cows ______ grazing in the field. ", options: ["is", "are"], answer: 0 },
+                { q: "More than one ______ available there.", options: ["was", "were"], answer: 0 },
+                { q: "More girls than one ______ present in the class.", options: ["was", "were"], answer: 1 },
+                { q: "Every boy and every girl ______ a prize.", options: ["has", "have"], answer: 0 },
+                { q: "The Jury ______ divided in its opinion.", options: ["was", "were"], answer: 0 },
+                { q: "Truth and honesty ______ the best policy.", options: ["is", "are"], answer: 0 },
+                { q: "Six times two ______ twelve.", options: ["is", "are"], answer: 0 },
+                { q: "Milk and honey ______ costly things.", options: ["is", "are"], answer: 1 },
+                { q: "The poet and the philosopher ______ said so.", options: ["has", "have"], answer: 1 },
+                { q: "Rice and fish ______ my favourite dish.", options: ["is", "are"], answer: 0 },
+                { q: "Neither you nor he ______ honest.", options: ["is", "are"], answer: 0 },
+                { q: "Either he or I ______ guilty.", options: ["am", "is"], answer: 0 }
+            ],
+            "8": [
+                { q: "A black and red cow ______ grazing in the field.", options: ["was", "were"], answer: 0 },
+                { q: "________ he or they to blame?", options: ["is", "are"], answer: 1 },
+                { q: "There ______ a man and a woman there.", options: ["is", "are"], answer: 1 },
+                { q: "The girl who is watching T.V. ______ my sister.", options: ["is", "are"], answer: 0 },
+                { q: "It ______ we who are to blame.", options: ["is", "are"], answer: 1 },
+                { q: "I wish I ______ a rich man.", options: ["was", "were"], answer: 1 },
+                { q: "He does not ______ to do it.", options: ["need", "needs"], answer: 0 },
+                { q: "Time and tide ______ for no man.", options: ["wait", "waits"], answer: 0 },
+                { q: "She ______ not do this.", options: ["need", "needs"], answer: 0 },
+                { q: "All that glitters ______ not gold.", options: ["is", "are"], answer: 0 },
+                { q: "The Himalayas ______ many peaks.", options: ["has", "have"], answer: 1 },
+                { q: "I wish he ______ the Chief Minister of Bihar.", options: ["was", "were"], answer: 1 },
+                { q: "It is I who ___ done this.", options: ["has", "have"], answer: 1 },
+                { q: "Ajay is one of those persons who ___ not accept bribes.", options: ["do", "does"], answer: 0 },
+                { q: "We should not ___ beaten our brother.", options: ["have", "has"], answer: 0 }
+            ],
+            "10": [
+                { q: "Some people ___ travelling.", options: ["is", "are"], answer: 1 },
+                { q: "A parcel of books ___ been received.", options: ["has", "have"], answer: 0 },
+                { q: "The rest of the book ___ not finished.", options: ["is", "are"], answer: 0 },
+                { q: "The students of Bihar ___ laborious.", options: ["is", "are"], answer: 1 },
+                { q: "The Magistrate and Collector ___ present in the meeting.", options: ["is", "are"], answer: 0 },
+                { q: "Oil and water ___ not mix.", options: ["does", "do"], answer: 1 },
+                { q: "Hammer and sickle ___ a symbol.", options: ["is", "are"], answer: 0 },
+                { q: "The United States ___ a big army.", options: ["has", "have"], answer: 0 },
+                { q: "Gulliver's Travels ___ a famous satire.", options: ["is", "are"], answer: 0 },
+                { q: "Both of them ___ good.", options: ["is", "are"], answer: 1 },
+                { q: "All ___ mortal.", options: ["is", "are"], answer: 1 },
+                { q: "Mr. and Mrs. Thakur ___ in the house.", options: ["is", "are"], answer: 1 },
+                { q: "What ___ the latest news?", options: ["is", "are"], answer: 0 },
+                { q: "Half of the milk ___ been spoiled.", options: ["has", "have"], answer: 0 },
+                { q: "Tendulkar is one of the players who ___ been selected for the test.", options: ["has", "have"], answer: 1 }
+            ],
+            "11": [
+                { q: "A bird _______ in the sky.", options: ["fly", "flies"], answer: 1 },
+                { q: "His secretary and his typist ______ on leave today.", options: ["is", "are"], answer: 1 },
+                { q: "His father and mother ______ there.", options: ["is", "are"], answer: 1 },
+                { q: "________ Mr. Mishra or Mr. Pandey in the class?", options: ["is", "are"], answer: 0 },
+                { q: "Age and experience ___ wisdom to man.", options: ["bring", "brings"], answer: 1 },
+                { q: "A large number of students ___ applied for the job.", options: ["has", "have"], answer: 1 },
+                { q: "Physics ___ his poorest subject.", options: ["is", "are"], answer: 0 },
+                { q: "The majority of them ___ Sikhs.", options: ["is", "are"], answer: 1 },
+                { q: "A great number of people ___ come here.", options: ["has", "have"], answer: 1 },
+                { q: "Fifty kilos ___ heavy for me to carry.", options: ["is", "are"], answer: 0 },
+                { q: "Pankaj, like his father, ___ very tall.", options: ["is", "are"], answer: 0 },
+                { q: "What I now need ___ mental peace.", options: ["is", "are"], answer: 0 },
+                { q: "India ___ produced great cricketers.", options: ["has", "have"], answer: 0 },
+                { q: "Two hundred rupees ___ distributed.", options: ["was", "were"], answer: 0 },
+                { q: "A pair of shoes ___ in this room.", options: ["is", "are"], answer: 0 }
+            ],
+            "12": [
+                { q: "Malaria ___ a tropical disease.", options: ["is", "are"], answer: 0 },
+                { q: "The moon ___ a satellite of the earth.", options: ["is", "are"], answer: 0 },
+                { q: "Some furniture ___ to be bought.", options: ["is", "are"], answer: 0 },
+                { q: "Five from ten ___ five.", options: ["is", "are"], answer: 0 },
+                { q: "A bunch of keys ___ lying on the table.", options: ["is", "are"], answer: 0 },
+                { q: "Day after day ___ passed.", options: ["has", "have"], answer: 0 },
+                { q: "Reading and writing ___ two different skills.", options: ["is", "are"], answer: 1 },
+                { q: "The majority of tourists ___ tired.", options: ["is", "are"], answer: 1 },
+                { q: "The Chinese ___ industrious.", options: ["is", "are"], answer: 1 },
+                { q: "One or two pens ___ old.", options: ["is", "are"], answer: 1 },
+                { q: "Ten percent of the chalk ___ useful.", options: ["was", "were"], answer: 0 },
+                { q: "None of those girls ___ attractive.", options: ["was", "were"], answer: 1 },
+                { q: "Heaven ___ us!", options: ["help", "helps"], answer: 0 },
+                { q: "God ___ the king.", options: ["save", "saves"], answer: 0 },
+                { q: "The crown and glory of life ___ character.", options: ["is", "are"], answer: 0 }
+            ],
+            "13": [
+                { q: "Riches ___ in hell.", options: ["grow", "grows"], answer: 0 },
+                { q: "Arms and the Man ___ a famous play.", options: ["is", "are"], answer: 0 },
+                { q: "The gentry ___ a luxurious life.", options: ["lead", "leads"], answer: 0 },
+                { q: "What I need ___ a colour TV.", options: ["is", "are"], answer: 0 },
+                { q: "The greens ___ not fresh.", options: ["is", "are"], answer: 1 },
+                { q: "Rekha wants to help you; so ___ Veena.", options: ["does", "do"], answer: 0 },
+                { q: "Manisha does not like me, neither ___ you.", options: ["do", "does"], answer: 0 },
+                { q: "My students were present there, so ___ I.", options: ["was", "were"], answer: 0 },
+                { q: "Sushma is a singer, as ___ her sister.", options: ["is", "are"], answer: 0 },
+                { q: "Rajani is intelligent, as ___ her brother.", options: ["is", "are"], answer: 0 },
+                { q: "The teeth of the girl ___ white.", options: ["is", "are"], answer: 1 },
+                { q: "He ordered as if he ___ my boss.", options: ["was", "were"], answer: 1 },
+                { q: "The number of books ___ increasing.", options: ["is", "are"], answer: 0 },
+                { q: "You and I ___ good friends.", options: ["is", "are"], answer: 1 },
+                { q: "The blind ___ helpless.", options: ["is", "are"], answer: 1 },
+                { q: "Her wages ___ Rs. a month.", options: ["is", "are"], answer: 1 },
+                { q: "Fifty percent of the amount ___ been paid.", options: ["has", "have"], answer: 0 },
+                { q: "A lot of pens ___ been purchased.", options: ["has", "have"], answer: 1 },
+                { q: "Village after village ___ destroyed.", options: ["was", "were"], answer: 0 },
+                { q: "Words worth’s poetry ___ immortal.", options: ["is", "are"], answer: 0 },
+                { q: "If I ___ rich, I would buy a car.", options: ["was", "were"], answer: 1 }
+            ]
+        };
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            const paperSelect = document.getElementById('paper-select');
+            const selectedPaperId = paperSelect.value;
+            const currentQuestions = papers[selectedPaperId];
+            
+            container.innerHTML = '';
+            
+            // Reset Progress
+            updateProgress(0, currentQuestions.length);
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            currentQuestions.forEach((item, i) => {
+                const questionCard = document.createElement('div');
+                // Reduced bottom margin from mb-6 to mb-4
+                questionCard.className = "bg-[#1e293b] rounded-xl border border-slate-700/50 shadow-lg overflow-hidden mb-4 break-inside-avoid inline-block w-full";
+                
+                const qContent = document.createElement('div');
+                qContent.className = "p-4 md:p-5 flex gap-3 md:gap-4 items-baseline";
+                
+                const qNum = document.createElement('span');
+                qNum.className = "font-black text-[#38bdf8] text-xl md:text-2xl min-w-[1.8rem]";
+                qNum.textContent = `${i + 1}.`;
+                
+                const textContainer = document.createElement('div');
+                textContainer.className = "text-white font-bold text-lg md:text-xl leading-snug tracking-wide flex-1";
+                
+                let processedText = item.q.replace(/_{2,}|\.{3,}|…/g, '___');
+                const parts = processedText.split('___');
+                
+                if (parts.length > 1) {
+                    textContainer.innerHTML = '';
+                    textContainer.appendChild(document.createTextNode(parts[0]));
+                    
+                    // The Blank Container
+                    const blankSpan = document.createElement('span');
+                    blankSpan.className = "blank-space";
+                    
+                    // The "Hidden" Answer (Floats on top)
+                    const answerSpan = document.createElement('span');
+                    answerSpan.className = "answer-text";
+                    answerSpan.textContent = item.options[item.answer];
+                    
+                    blankSpan.appendChild(answerSpan);
+                    
+                    blankSpan.onclick = function() {
+                        this.classList.toggle('revealed');
+                        // Calculate progress based on how many are revealed
+                        const total = currentQuestions.length;
+                        const revealedCount = document.querySelectorAll('.blank-space.revealed').length;
+                        updateProgress(revealedCount, total);
+                    };
+                    textContainer.appendChild(blankSpan);
+                    
+                    textContainer.appendChild(document.createTextNode(parts[1]));
+                    
+                    const hintSpan = document.createElement('span');
+                    hintSpan.className = "hint-text";
+                    hintSpan.textContent = `(${item.options.join(' / ')})`;
+                    textContainer.appendChild(hintSpan);
+                    
+                } else {
+                    textContainer.textContent = item.q;
+                }
+
+                qContent.appendChild(qNum);
+                qContent.appendChild(textContainer);
+
+                questionCard.appendChild(qContent);
+                container.appendChild(questionCard);
+            });
+        }
+        
+        function updateProgress(count, total) {
+            const percentage = (count / total) * 100;
+            const bar = document.getElementById('progress-fill');
+            bar.style.width = `${percentage}%`;
+        }
+
+        renderQuiz();
+
+    </script>
+    </body>
+</html>
