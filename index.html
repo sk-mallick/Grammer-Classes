@@ -32,11 +32,13 @@
     </script>
         <style>
         body {
-            background-color: #050505;
+            /* CHANGED: Deep Royal Blue Base to match logo */
+            background-color: #020617; 
             color: #ffffff;
             background-size: 40px 40px;
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(234, 179, 8, 0.15) 0%, transparent 60%),
+                /* CHANGED: Glow color updated to Blue */
+                radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.25) 0%, transparent 70%),
                 linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
             background-size: 100% 100%, 30px 30px, 30px 30px;
@@ -44,7 +46,8 @@
 
         .version-card {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            background: linear-gradient(145deg, #111111, #0a0a0a);
+            /* CHANGED: Card background to dark blue gradient */
+            background: linear-gradient(145deg, #0f172a, #020617);
         }
 
         .version-card:hover {
@@ -67,13 +70,10 @@
     </head>
     <body class="min-h-screen flex flex-col items-center p-6">
 
-        <!-- Main Content Wrapper -->
         <div
             class="flex-grow w-full max-w-6xl flex flex-col items-center justify-center">
 
-            <!-- Header Section -->
             <div class="text-center mb-16 mt-10 md:mt-0">
-                <!-- Brand Badge -->
                 <div
                     class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-800 bg-gray-900/50 backdrop-blur-sm mb-8">
                     <span
@@ -83,13 +83,11 @@
                         Repository</span>
                 </div>
 
-                <!-- Main Heading -->
                 <h1
                     class="text-5xl md:text-7xl font-black tracking-tight mb-4 text-white drop-shadow-xl">
                     ENGLISH<span class="text-red-600">JIBI</span>
                 </h1>
 
-                <!-- ChiranjiBi Sir Branding -->
                 <h2
                     class="text-2xl md:text-3xl font-serif italic text-gray-300 mb-6">
                     by <span
@@ -97,7 +95,6 @@
                         Sir</span>
                 </h2>
 
-                <!-- Description -->
                 <p
                     class="text-gray-500 text-sm md:text-base font-medium max-w-xl mx-auto leading-relaxed border-t border-gray-800 pt-6 mt-6">
                     Your destination for complete grammar resources.<br>
@@ -106,18 +103,15 @@
                 </p>
             </div>
 
-            <!-- Responsive Grid Container -->
             <div
                 class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl px-4 relative z-10">
 
-                <!-- Card 1: MCQs -->
                 <a href="1-60 MCQ (v1).html"
                     class="version-card group relative block border border-gray-800 rounded-2xl p-8 text-center cursor-pointer no-underline overflow-hidden">
                     <div
                         class="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl text-gray-500 group-hover:text-gold-500 transition-colors">01</div>
                     <div
                         class="icon-box w-14 h-14 rounded-xl bg-gray-900 text-gold-500 border border-gray-700 flex items-center justify-center mx-auto mb-6 text-xl font-bold shadow-lg">
-                        <!-- Checkbox List Icon -->
                         <svg class="w-6 h-6" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24"><path stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="2"
@@ -130,14 +124,12 @@
                         Questions Each</p>
                 </a>
 
-                <!-- Card 2: Fill in the Blanks -->
                 <a href="Fill-In-The-Blanks.html"
                     class="version-card group relative block border border-gray-800 rounded-2xl p-8 text-center cursor-pointer no-underline overflow-hidden">
                     <div
                         class="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl text-gray-500 group-hover:text-gold-500 transition-colors">02</div>
                     <div
                         class="icon-box w-14 h-14 rounded-xl bg-gray-900 text-gold-500 border border-gray-700 flex items-center justify-center mx-auto mb-6 text-xl font-bold shadow-lg">
-                        <!-- Pencil/Edit Icon -->
                         <svg class="w-6 h-6" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24"><path stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="2"
@@ -150,14 +142,12 @@
                         Questions Each</p>
                 </a>
 
-                <!-- Card 3: Advanced/Mixed -->
                 <a href="1-60 MCQ (v3).html"
                     class="version-card group relative block border border-gray-800 rounded-2xl p-8 text-center cursor-pointer no-underline overflow-hidden">
                     <div
                         class="absolute top-0 right-0 p-4 opacity-10 font-black text-6xl text-gray-500 group-hover:text-gold-500 transition-colors">03</div>
                     <div
                         class="icon-box w-14 h-14 rounded-xl bg-gray-900 text-gold-500 border border-gray-700 flex items-center justify-center mx-auto mb-6 text-xl font-bold shadow-lg">
-                        <!-- Lightning/Mixed Icon -->
                         <svg class="w-6 h-6" fill="none" stroke="currentColor"
                             viewBox="0 0 24 24"><path stroke-linecap="round"
                                 stroke-linejoin="round" stroke-width="2"
@@ -174,7 +164,6 @@
 
         </div>
 
-        <!-- Classic Footer -->
         <footer class="w-full text-center py-8 mt-12 border-t border-gray-900">
             <div
                 class="flex flex-col gap-2 items-center justify-center text-sm text-gray-500">
@@ -202,5 +191,4 @@
         </footer>
 
     </body>
-
 </html>
