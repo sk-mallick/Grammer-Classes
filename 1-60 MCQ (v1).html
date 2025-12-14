@@ -5,9 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Syntax Practice - Classroom Edition</title>
         <script src="https://cdn.tailwindcss.com"></script>
-        <!-- Confetti Library -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+        <!-- Added Confetti Library -->
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
         <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
             rel="stylesheet">
@@ -16,10 +15,7 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    screens: {
-                        'xs': '475px',
-                    }
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
                 }
             }
         }
@@ -63,19 +59,20 @@
              color: #ffffff !important;
         }
 
-        /* Badge Styles */
+        /* Badge Styles inside buttons */
         .badge-default {
-            background-color: #334155; /* Slate 700 */
-            color: #94a3b8; /* Slate 400 */
+            background-color: #334155; 
+            color: #94a3b8; 
             border: 1px solid #475569;
         }
+        
         .badge-active {
             background-color: rgba(255,255,255,0.2) !important;
             color: #ffffff !important;
             border-color: transparent !important;
         }
 
-        /* Teacher Menu Toggle Animation */
+        /* Menu Animation */
         #teacher-menu {
             transform: translateY(-100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -91,81 +88,92 @@
             color: white !important;
             box-shadow: 0 0 15px rgba(22, 163, 74, 0.4) !important;
         }
-        
-        /* Custom Scrollbar for the Menu */
-        #teacher-menu::-webkit-scrollbar {
-            width: 8px;
-        }
-        #teacher-menu::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-        #teacher-menu::-webkit-scrollbar-thumb {
-            background: #334155; 
-            border-radius: 4px;
-        }
-        #teacher-menu::-webkit-scrollbar-thumb:hover {
-            background: #475569; 
-        }
 
-        /* Effect Toggle Button Styles */
+        /* Effect Toggle Styles */
         .effect-btn {
             position: relative;
             overflow: hidden;
         }
+        
+        /* Effect Toggle Off State (Red Slash) */
         .slash-line {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 120%;
-            height: 3px;
+            width: 80%;
+            height: 2px;
             background-color: #ef4444; /* Red 500 */
             transform: translate(-50%, -50%) rotate(-45deg);
-            opacity: 0;
-            transition: opacity 0.2s ease;
+            box-shadow: 0 0 2px rgba(0,0,0,0.8);
             pointer-events: none;
-            box-shadow: 0 0 4px rgba(0,0,0,0.5);
+            display: none; /* Hidden by default */
+            z-index: 10;
         }
-        .effect-btn.disabled {
+        
+        /* When disabled, show slash and dim opacity */
+        .effect-disabled .slash-line {
+            display: block;
+        }
+        .effect-disabled {
             opacity: 0.7;
-            background-color: #1e293b !important;
-            border-color: #ef4444 !important;
-        }
-        .effect-btn.disabled .slash-line {
-            opacity: 1;
+            background-color: #1e293b !important; /* Darker slate when disabled */
         }
     </style>
     </head>
 
-    <body class="pb-20 min-h-screen flex flex-col pt-[100px] md:pt-[120px]">
+    <body class="pb-20 min-h-screen flex flex-col pt-[120px]">
 
         <!-- HEADER -->
         <div class="fixed top-0 left-0 w-full z-50">
             <header
                 class="bg-[#020617]/95 backdrop-blur-md shadow-2xl border-b border-slate-800 relative z-50">
                 <div
-                    class="w-full max-w-[98%] mx-auto px-4 md:px-6 py-3 flex justify-between items-center gap-3 md:gap-4">
+                    class="w-full max-w-[98%] mx-auto px-6 py-3 flex justify-between items-center gap-4">
 
                     <!-- Title -->
                     <div
-                        class="flex items-center gap-3 md:gap-4 flex-shrink-1 min-w-0">
+                        class="flex items-stretch gap-4 self-start sm:self-center">
                         <div
-                            class="w-1 h-8 md:w-1.5 md:h-10 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.5)] flex-shrink-0"></div>
-                        <div class="min-w-0">
+                            class="w-1.5 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] self-stretch"></div>
+
+                        <div class="flex flex-col">
                             <h1
-                                class="text-lg md:text-2xl font-black text-white uppercase leading-none tracking-tight truncate">TIME
-                                & TENSE</h1>
+                                class="text-xl md:text-2xl font-black tracking-wide text-white uppercase leading-none">
+                                TIME & TENSE <span
+                                    class="text-blue-400">PRACTICE</span>
+                            </h1>
                             <p
-                                class="text-[10px] md:text-xs font-bold text-slate-400 tracking-[0.15em] uppercase mt-1 truncate">Classroom
-                                Mode</p>
+                                class="text-xs md:text-sm font-bold text-slate-400 tracking-[0.15em] mt-1 uppercase leading-tight">
+                                By Chiranjibi Sir
+                            </p>
                         </div>
                     </div>
 
-                    <!-- Right Side Controls: Home + Tools -->
-                    <div class="flex items-center gap-2 md:gap-3 flex-shrink-0">
+                    <!-- Right Side Controls -->
+                    <div class="flex items-center gap-3">
+
+                        <!-- NEW: SOUND TOGGLE -->
+                        <button onclick="toggleEffect('sound')" id="btn-sound"
+                            class="effect-btn group flex items-center justify-center w-11 h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-200"
+                            title="Toggle Sound">
+                            <span class="text-xl">🔊</span>
+                            <div class="slash-line"></div>
+                        </button>
+
+                        <!-- NEW: CONFETTI TOGGLE -->
+                        <button onclick="toggleEffect('confetti')" id="btn-confetti"
+                            class="effect-btn group flex items-center justify-center w-11 h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-200"
+                            title="Toggle Confetti">
+                            <span class="text-xl">🎉</span>
+                            <div class="slash-line"></div>
+                        </button>
+
+                        <!-- DIVIDER -->
+                        <div class="w-px h-8 bg-slate-700 mx-1"></div>
 
                         <!-- HOME BUTTON -->
                         <a href="index.html"
-                            class="group flex items-center justify-center w-10 h-10 md:w-11 md:h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-400 hover:text-white"
+                            class="group flex items-center justify-center w-11 h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-400 hover:text-white"
                             title="Go to Home">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="h-5 w-5" fill="none" viewBox="0 0 24 24"
@@ -178,10 +186,9 @@
 
                         <!-- Teacher Controls Toggle -->
                         <button onclick="toggleMenu()" id="menu-toggle-btn"
-                            class="group flex items-center gap-2 px-3 md:px-5 py-2 md:py-2.5 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shrink-0 shadow-lg cursor-pointer h-10 md:h-auto">
-                            <!-- Hidden on small screens to save space -->
+                            class="group flex items-center gap-2 px-5 py-2.5 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shrink-0 shadow-lg cursor-pointer">
                             <span
-                                class="hidden sm:inline text-xs md:text-sm font-bold text-slate-300 group-hover:text-white tracking-wide">TOOLS</span>
+                                class="text-sm font-bold text-slate-300 group-hover:text-white tracking-wide">TOOLS</span>
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 class="h-5 w-5 text-slate-400 group-hover:text-blue-400"
                                 fill="none" viewBox="0 0 24 24"
@@ -200,54 +207,51 @@
                 </div>
             </header>
 
-            <!-- SLIDING MENU (RESPONSIVE) -->
+            <!-- SLIDING MENU -->
             <div id="teacher-menu"
-                class="absolute top-[100%] left-0 w-full bg-[#0f172a] border-b border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-40 py-6 px-4 md:py-8 md:px-6 max-h-[85vh] overflow-y-auto">
+                class="absolute top-[100%] left-0 w-full bg-[#0f172a] border-b border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-40 py-8 px-6">
                 <div
-                    class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
-                    <!-- Reduced gap-6 to gap-4 for mobile -->
+                    class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
 
                     <!-- SECTION 1: Standard Sets -->
                     <div class="space-y-4">
                         <h3
-                            class="text-blue-400 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Select
+                            class="text-purple-400 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Select
                             Set</h3>
-                        <div class="grid grid-cols-3 gap-2 md:gap-3">
-                            <!-- Tighter gap on mobile -->
+                        <div class="grid grid-cols-3 gap-3">
                             <button onclick="selectSet(1)" id="btn-set-1"
-                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all text-sm md:text-base">Set
+                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all">Set
                                 1</button>
                             <button onclick="selectSet(2)" id="btn-set-2"
-                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all text-sm md:text-base">Set
+                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all">Set
                                 2</button>
                             <button onclick="selectSet(3)" id="btn-set-3"
-                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all text-sm md:text-base">Set
+                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all">Set
                                 3</button>
                             <button onclick="selectSet(4)" id="btn-set-4"
-                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all text-sm md:text-base">Set
+                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all">Set
                                 4</button>
                             <button onclick="selectSet(5)" id="btn-set-5"
-                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all text-sm md:text-base">Set
+                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all">Set
                                 5</button>
                             <button onclick="selectSet(6)" id="btn-set-6"
-                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all text-sm md:text-base">Set
+                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all">Set
                                 6</button>
                         </div>
                     </div>
 
-                    <!-- SECTION 2: Filters (COMPACT) -->
+                    <!-- SECTION 2: Filters -->
                     <div class="space-y-4">
                         <h3
-                            class="text-indigo-400 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Sequence
+                            class="text-yellow-400 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Sequence
                             Filters</h3>
-                        <!-- Removed fixed height h-[116px] for better responsiveness -->
                         <div class="flex gap-4">
                             <button onclick="setMode('odd')" id="btn-odd"
-                                class="flex-1 py-3 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-xl hover:text-white hover:bg-slate-700 hover:border-indigo-500 flex items-center justify-center transition-all text-2xl md:text-5xl">
+                                class="flex-1 py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-xl hover:text-white hover:bg-slate-700 hover:border-indigo-500 flex items-center justify-center transition-all text-5xl">
                                 O
                             </button>
                             <button onclick="setMode('even')" id="btn-even"
-                                class="flex-1 py-3 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-xl hover:text-white hover:bg-slate-700 hover:border-indigo-500 flex items-center justify-center transition-all text-2xl md:text-5xl">
+                                class="flex-1 py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-xl hover:text-white hover:bg-slate-700 hover:border-indigo-500 flex items-center justify-center transition-all text-5xl">
                                 E
                             </button>
                         </div>
@@ -256,9 +260,9 @@
                     <!-- SECTION 3: Random -->
                     <div class="space-y-4">
                         <h3
-                            class="text-emerald-500 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Randomizer</h3>
+                            class="text-indigo-500 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Randomizer</h3>
                         <div class="flex flex-col gap-3">
-                            <div class="flex gap-2 h-12">
+                            <div class="flex gap-2">
                                 <div class="relative w-24">
                                     <input type="number" id="random-count"
                                         placeholder="10" value="10"
@@ -268,7 +272,7 @@
                                 </div>
                                 <button onclick="generateRandom()"
                                     id="btn-random"
-                                    class="flex-1 bg-emerald-900/10 hover:bg-emerald-600 border border-emerald-900 hover:border-emerald-500 text-emerald-500 hover:text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2">
+                                    class="flex-1 py-3 bg-emerald-900/10 hover:bg-emerald-600 border border-emerald-900 hover:border-emerald-500 text-emerald-500 hover:text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         class="h-5 w-5" fill="none"
                                         viewBox="0 0 24 24"
@@ -288,31 +292,9 @@
                         </div>
                     </div>
 
-                    <!-- SECTION 4: Effects (COMPACT) -->
-                    <div class="space-y-4">
-                        <h3
-                            class="text-pink-500 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Effects</h3>
-                        <!-- Removed fixed height -->
-                        <div class="flex gap-4">
-                            <!-- Sound Toggle -->
-                            <button onclick="toggleSound()"
-                                id="btn-sound-toggle"
-                                class="effect-btn flex-1 py-3 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-xl hover:text-white hover:bg-slate-700 hover:border-pink-500 flex items-center justify-center transition-all text-2xl md:text-5xl">
-                                <span class="relative z-10">🔊</span>
-                                <div class="slash-line"></div>
-                            </button>
-                            <!-- Confetti Toggle -->
-                            <button onclick="toggleConfetti()"
-                                id="btn-confetti-toggle"
-                                class="effect-btn flex-1 py-3 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-xl hover:text-white hover:bg-slate-700 hover:border-pink-500 flex items-center justify-center transition-all text-2xl md:text-5xl">
-                                <span class="relative z-10">🎉</span>
-                                <div class="slash-line"></div>
-                            </button>
-                        </div>
-                    </div>
-
                 </div>
             </div>
+        </div>
         </div>
 
         <!-- MAIN CONTENT -->
@@ -388,66 +370,94 @@
         ];
 
         // STATE
-        let currentMode = 'set'; // set, odd, even, random
+        let currentMode = 'set'; 
         let activeQuestions = [];
         let currentSet = 1;
+        
+        // --- NEW: EFFECT STATES ---
         let soundEnabled = true;
         let confettiEnabled = true;
-
-        // AUDIO CONTEXT SETUP
+        
+        // --- NEW: AUDIO CONTEXT (No external files needed) ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-        function playSuccessSound() {
+        
+        function playTone(freq, type, duration) {
             if (!soundEnabled) return;
-            // Resume context if suspended (browser policy)
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+            // Create oscillator
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = type;
+            osc.frequency.value = freq;
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start();
+            // Fade out to avoid clicking sound
+            gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+            osc.stop(audioCtx.currentTime + duration);
+        }
 
-            const now = audioCtx.currentTime;
+        function playCorrectSound() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            // High ping
+            playTone(800, 'sine', 0.1); 
+            setTimeout(() => playTone(1200, 'sine', 0.2), 100);
+        }
 
-            // Create three oscillators for a chord (C Major: C5, E5, G5)
-            [523.25, 659.25, 783.99].forEach((freq, i) => {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
+        function playWrongSound() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            if (!soundEnabled) return;
+            
+            // Create a "Bloop" descending sound (Game Over style)
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = 'triangle'; // Softer, less buzzy
+            osc.frequency.setValueAtTime(300, audioCtx.currentTime); // Start mid-low
+            osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.4); // Drop pitch
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start();
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime); // Moderate volume
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4); // Fade out
+            osc.stop(audioCtx.currentTime + 0.4);
+        }
 
-                osc.type = 'sine';
-                osc.frequency.value = freq;
-                
-                // Envelope
-                gain.gain.setValueAtTime(0, now);
-                gain.gain.linearRampToValueAtTime(0.1, now + 0.05); // Attack
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5); // Decay
-
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-
-                // Stagger slightly for a strum effect
-                osc.start(now + (i * 0.05));
-                osc.stop(now + 0.6);
+        // --- NEW: CONFETTI TRIGGER ---
+        function triggerConfetti() {
+            if (!confettiEnabled) return;
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
             });
         }
 
-        function playErrorSound() {
-            if (!soundEnabled) return;
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-
-            const now = audioCtx.currentTime;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(150, now); // Low pitch
-            osc.frequency.linearRampToValueAtTime(100, now + 0.3); // Pitch drop
-
-            gain.gain.setValueAtTime(0.1, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            osc.start(now);
-            osc.stop(now + 0.4);
+        // --- NEW: TOGGLE FUNCTIONS ---
+        function toggleEffect(type) {
+            if (type === 'sound') {
+                soundEnabled = !soundEnabled;
+                const btn = document.getElementById('btn-sound');
+                if(!soundEnabled) {
+                    btn.classList.add('effect-disabled');
+                } else {
+                    btn.classList.remove('effect-disabled');
+                }
+            } else if (type === 'confetti') {
+                confettiEnabled = !confettiEnabled;
+                const btn = document.getElementById('btn-confetti');
+                if(!confettiEnabled) {
+                    btn.classList.add('effect-disabled');
+                } else {
+                    btn.classList.remove('effect-disabled');
+                }
+            }
         }
-        
+
         // 1. INITIALIZE
         function init() {
             selectSet(1);
@@ -458,70 +468,56 @@
             document.getElementById('teacher-menu').classList.toggle('open');
         }
 
-        // Helper to close menu
         function closeMenu() {
             document.getElementById('teacher-menu').classList.remove('open');
         }
 
-        // 3. SET HANDLER (Button Grid)
+        // 3. SET HANDLER
         function selectSet(setNum) {
             currentSet = setNum;
-            
-            // Logic: Set 1 = 0-9, Set 2 = 10-19...
             const start = (setNum - 1) * 10;
             const end = start + 10;
-            
             activeQuestions = fullDB.slice(start, end);
             currentMode = 'set';
-            
             updateButtonStyles();
             renderQuiz();
-            closeMenu(); // Close after selection
+            closeMenu();
         }
 
-        // 4. SPECIAL MODES (Filter Buttons)
+        // 4. SPECIAL MODES
         function setMode(mode) {
             currentMode = mode;
-            
             if (mode === 'odd') {
                 activeQuestions = fullDB.filter((_, i) => (i + 1) % 2 !== 0);
             } else if (mode === 'even') {
                 activeQuestions = fullDB.filter((_, i) => (i + 1) % 2 === 0);
             }
-            
             updateButtonStyles();
             renderQuiz();
-            closeMenu(); // Close after selection
+            closeMenu();
         }
 
         function generateRandom() {
             const countInput = document.getElementById('random-count').value;
             const count = parseInt(countInput) || 10; 
-
             const shuffled = [...fullDB].sort(() => 0.5 - Math.random());
             activeQuestions = shuffled.slice(0, count);
-
             currentMode = 'random';
             updateButtonStyles();
             renderQuiz();
-            closeMenu(); // Close after selection
+            closeMenu();
         }
 
         function updateButtonStyles() {
-            // 1. Reset ALL buttons (Sets, Odd/Even, Random)
             const allBtnIds = [
                 'btn-set-1', 'btn-set-2', 'btn-set-3', 'btn-set-4', 'btn-set-5', 'btn-set-6',
                 'btn-odd', 'btn-even', 'btn-random'
             ];
-            
             allBtnIds.forEach(id => {
                 const el = document.getElementById(id);
-                if(el) {
-                    el.classList.remove('btn-active');
-                }
+                if(el) el.classList.remove('btn-active');
             });
 
-            // 2. Highlight Active
             if (currentMode === 'set') {
                 const id = `btn-set-${currentSet}`;
                 document.getElementById(id).classList.add('btn-active');
@@ -534,28 +530,6 @@
             }
         }
 
-        // 4.5 EFFECT TOGGLES
-        function toggleSound() {
-            soundEnabled = !soundEnabled;
-            const btn = document.getElementById('btn-sound-toggle');
-            if (soundEnabled) {
-                btn.classList.remove('disabled');
-            } else {
-                btn.classList.add('disabled');
-            }
-        }
-
-        function toggleConfetti() {
-            confettiEnabled = !confettiEnabled;
-            const btn = document.getElementById('btn-confetti-toggle');
-            if (confettiEnabled) {
-                btn.classList.remove('disabled');
-            } else {
-                btn.classList.add('disabled');
-            }
-        }
-
-
         // 5. SHUFFLE OPTIONS LOGIC
         function getShuffledOptionsObj(questionItem) {
             const correctText = questionItem.options[questionItem.answer];
@@ -565,7 +539,7 @@
             return { shuffledOptions: opts.map(o => o.text), newAnswerIndex: newAnswerIndex };
         }
 
-        // 6. RENDER - STRICTLY UPDATED TO USER SNIPPET
+        // 6. RENDER
         function renderQuiz() {
             const container = document.getElementById('quiz-container');
             container.innerHTML = '';
@@ -579,13 +553,10 @@
                 const displayNum = index + 1;
                 const { shuffledOptions, newAnswerIndex } = getShuffledOptionsObj(item);
 
-                // --- NEW CARD STRUCTURE START ---
-                // Outer Card: Slate 800 (#1e293b)
                 const card = document.createElement('div');
                 card.className = "bg-[#1e293b] rounded-xl md:rounded-2xl shadow-2xl border-2 border-slate-700 overflow-hidden";
                 card.setAttribute('data-answered', 'false');
 
-                // Header: Slate 900 (#0f172a) - Darker than card
                 const header = document.createElement('div');
                 header.className = "bg-[#0f172a] px-4 py-3 md:px-6 md:py-4 border-b border-slate-700 flex gap-3 md:gap-4 items-start";
                 
@@ -594,7 +565,6 @@
                     <p class="text-white font-bold text-lg md:text-xl leading-relaxed tracking-wide pt-0.5">${item.q}</p>
                 `;
 
-                // Options Container
                 const optsDiv = document.createElement('div');
                 optsDiv.className = "p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4";
 
@@ -602,7 +572,6 @@
                 
                 shuffledOptions.forEach((optText, i) => {
                     const btn = document.createElement('button');
-                    // Button Style: Slate 800 (Lighter than body) with Borders
                     btn.className = "option-btn w-full text-left px-4 py-3 md:px-5 md:py-4 rounded-lg md:rounded-xl border-2 border-slate-600 text-slate-100 font-bold text-base md:text-lg bg-slate-800 hover:bg-slate-700 hover:border-slate-500 focus:outline-none relative overflow-hidden group flex items-center shadow-lg";
                     
                     btn.innerHTML = `
@@ -613,7 +582,6 @@
                     btn.onclick = () => checkAnswer(btn, i, newAnswerIndex, optsDiv);
                     optsDiv.appendChild(btn);
                 });
-                // --- NEW CARD STRUCTURE END ---
 
                 card.appendChild(header);
                 card.appendChild(optsDiv);
@@ -626,26 +594,21 @@
             // 1. Reset ALL buttons in this specific question card first
             const allBtns = container.querySelectorAll('.option-btn');
             allBtns.forEach(btn => {
-                // Remove all color classes
                 btn.classList.remove('correct', 'wrong');
-                // Re-add default styling classes if they were removed
                 btn.classList.add('border-slate-600', 'bg-slate-800', 'text-slate-100');
                 
-                // Reset Badge styles inside the button
                 const badge = btn.querySelector('.badge-default, .badge-active');
                 if(badge) {
                      badge.classList.remove('badge-active');
                      badge.classList.add('badge-default');
-                     badge.style.borderColor = ""; // Clear inline styles if any
+                     badge.style.borderColor = ""; 
                      badge.style.color = "";
                 }
             });
 
             // 2. Apply color to the CLICKED button
-            // Remove default dark styling so color shines through
             clickedBtn.classList.remove('border-slate-600', 'bg-slate-800', 'text-slate-100');
 
-            // Find and update badge
             const badge = clickedBtn.querySelector('.badge-default');
             if(badge) {
                 badge.classList.remove('badge-default');
@@ -654,53 +617,25 @@
 
             if (selectedIndex === correctIndex) {
                 clickedBtn.classList.add('correct');
-                
-                if (confettiEnabled) {
-                    // TRIGGER DUAL CONFETTI (Left & Right)
-                    const colors = ['#22c55e', '#ffffff', '#facc15'];
-                    
-                    // Left cannon
-                    confetti({
-                        particleCount: 150,
-                        spread: 100,
-                        origin: { x: 0, y: 0.8 }, // Lower origin
-                        angle: 60,
-                        startVelocity: 45,
-                        colors: colors,
-                        disableForReducedMotion: true
-                    });
-                    
-                    // Right cannon
-                    confetti({
-                        particleCount: 150,
-                        spread: 100,
-                        origin: { x: 1, y: 0.8 }, // Lower origin
-                        angle: 120,
-                        startVelocity: 45,
-                        colors: colors,
-                        disableForReducedMotion: true
-                    });
-                }
-                
-                playSuccessSound();
+                // --- NEW: TRIGGER EFFECTS ---
+                playCorrectSound();
+                triggerConfetti();
             } else {
                 clickedBtn.classList.add('wrong');
-                playErrorSound();
+                // --- NEW: TRIGGER EFFECTS ---
+                playWrongSound();
             }
         }
 
-        // GLOBAL CLICK LISTENER: Close menu if clicked outside
+        // GLOBAL CLICK LISTENER
         document.addEventListener('click', function(event) {
             const menu = document.getElementById('teacher-menu');
             const toggleBtn = document.getElementById('menu-toggle-btn');
-            
-            // If menu is open AND click is NOT inside menu AND click is NOT on the toggle button
             if (menu.classList.contains('open') && !menu.contains(event.target) && !toggleBtn.contains(event.target)) {
                 closeMenu();
             }
         });
 
-        // Run
         init();
 
     </script>
