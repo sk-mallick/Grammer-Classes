@@ -80,28 +80,39 @@
 
         <!-- NEW HEADER -->
         <div class="fixed top-0 left-0 w-full z-50">
-            <header class="bg-[#020617]/95 backdrop-blur shadow-xl border-b border-slate-800">
+            <header
+                class="bg-[#020617]/95 backdrop-blur shadow-xl border-b border-slate-800">
                 <!-- Increased width to 95% for maximum space usage -->
-                <div class="w-[95%] max-w-[1920px] mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+                <div
+                    class="w-[95%] max-w-[1920px] mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
                     <!-- Title Section -->
-                    <div class="flex items-stretch gap-4 self-start sm:self-center">
+                    <div
+                        class="flex items-stretch gap-4 self-start sm:self-center">
                         <!-- Vertical Line covering both lines -->
-                        <div class="w-1.5 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] self-stretch"></div>
+                        <div
+                            class="w-1.5 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] self-stretch"></div>
 
                         <div class="flex flex-col">
-                            <h1 class="text-xl md:text-2xl font-black tracking-wide text-white uppercase leading-none">
-                                TIME & TENSE <span class="text-blue-400">PRACTICE</span>
+                            <h1
+                                class="text-xl md:text-2xl font-black tracking-wide text-white uppercase leading-none">
+                                TIME & TENSE <span
+                                    class="text-blue-400">PRACTICE</span>
                             </h1>
-                            <p class="text-xs md:text-sm font-bold text-slate-400 tracking-[0.15em] mt-1 uppercase leading-tight">
+                            <p
+                                class="text-xs md:text-sm font-bold text-slate-400 tracking-[0.15em] mt-1 uppercase leading-tight">
                                 By Chiranjibi Sir
                             </p>
                         </div>
                     </div>
 
                     <!-- Controls -->
-                    <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
-                        <div class="relative group w-full sm:w-auto">
-                            <select id="paper-select" onchange="renderQuiz()" class="w-full sm:w-auto appearance-none bg-slate-900 text-slate-100 border border-slate-700 hover:border-blue-400 pl-4 pr-10 py-2 rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all cursor-pointer shadow-sm">
+                    <div
+                        class="flex items-center gap-3 w-full sm:w-auto justify-end">
+
+                        <div
+                            class="relative group flex-1 sm:flex-none sm:w-auto">
+                            <select id="paper-select" onchange="renderQuiz()"
+                                class="w-full sm:w-auto appearance-none bg-slate-900 text-slate-100 border border-slate-700 hover:border-blue-400 pl-4 pr-10 py-2 rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all cursor-pointer shadow-sm">
                                 <option value="1">Set 1 (15 Qs)</option>
                                 <option value="2">Set 2 (15 Qs)</option>
                                 <option value="3">Set 3 (15 Qs)</option>
@@ -115,17 +126,33 @@
                                 <option value="12">Set 12 (15 Qs)</option>
                                 <option value="13">Set 13 (21 Qs)</option>
                             </select>
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400 group-hover:text-blue-400 transition-colors">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>
+                            <div
+                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400 group-hover:text-blue-400 transition-colors">
+                                <svg class="fill-current h-4 w-4"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 20 20"><path
+                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>
                             </div>
                         </div>
+
+                        <a href="index.html"
+                            class="group flex items-center justify-center w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 hover:border-blue-500 hover:bg-blue-500/10 transition-all duration-300 shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] shrink-0"
+                            title="Back to Home">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24" fill="currentColor"
+                                class="w-5 h-5 text-slate-400 group-hover:text-blue-400 transition-colors"><path
+                                    d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" /><path
+                                    d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" /></svg>
+                        </a>
                     </div>
                 </div>
             </header>
 
             <!-- Progress Bar -->
             <div class="w-full h-1.5 bg-slate-800">
-                <div id="progress-fill" class="h-full bg-gradient-to-r from-blue-500 to-emerald-400 w-0 shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-500 ease-out" style="width: 0%;"></div>
+                <div id="progress-fill"
+                    class="h-full bg-gradient-to-r from-blue-500 to-emerald-400 w-0 shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-500 ease-out"
+                    style="width: 0%;"></div>
             </div>
         </div>
 
