@@ -3,35 +3,33 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Syntax Practice Quiz</title>
+        <title>Syntax Practice - Classroom Edition</title>
         <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Confetti Library -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
         <link
             href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
             rel="stylesheet">
+
         <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        dark: {
-                            bg: '#020617',      
-                            card: '#1e293b',    
-                            hover: '#334155',   
-                            border: '#334155',  
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    screens: {
+                        'xs': '475px',
                     }
                 }
             }
         }
     </script>
+
         <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #020617; 
-            color: #ffffff;
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #020617; /* Slate 950 */
+            color: #ffffff; 
         }
         
         /* Button Animations */
@@ -49,14 +47,23 @@
             color: #ffffff !important;
             box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
         }
+        .correct .badge-default {
+             border-color: #ffffff !important;
+             color: #ffffff !important;
+        }
+
         .wrong {
             background-color: #dc2626 !important; /* Vivid Red */
             border-color: #ef4444 !important;
             color: #ffffff !important;
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
         }
+        .wrong .badge-default {
+             border-color: #ffffff !important;
+             color: #ffffff !important;
+        }
 
-        /* Badge Styles inside buttons */
+        /* Badge Styles */
         .badge-default {
             background-color: #334155; /* Slate 700 */
             color: #94a3b8; /* Slate 400 */
@@ -68,311 +75,640 @@
             border-color: transparent !important;
         }
 
-        /* Custom scrollbar for select dropdown */
-        select option {
-            background-color: #1e293b;
-            color: #ffffff;
-            padding: 10px;
+        /* Teacher Menu Toggle Animation */
+        #teacher-menu {
+            transform: translateY(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #teacher-menu.open {
+            transform: translateY(0);
+        }
+
+        /* Active Button State for Tools Menu */
+        .btn-active {
+            background-color: #16a34a !important;
+            border-color: #22c55e !important;
+            color: white !important;
+            box-shadow: 0 0 15px rgba(22, 163, 74, 0.4) !important;
+        }
+        
+        /* Custom Scrollbar for the Menu */
+        #teacher-menu::-webkit-scrollbar {
+            width: 8px;
+        }
+        #teacher-menu::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        #teacher-menu::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        #teacher-menu::-webkit-scrollbar-thumb:hover {
+            background: #475569; 
+        }
+
+        /* Effect Toggle Button Styles */
+        .effect-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        .slash-line {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120%;
+            height: 3px;
+            background-color: #ef4444; /* Red 500 */
+            transform: translate(-50%, -50%) rotate(-45deg);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+            box-shadow: 0 0 4px rgba(0,0,0,0.5);
+        }
+        .effect-btn.disabled {
+            opacity: 0.7;
+            background-color: #1e293b !important;
+            border-color: #ef4444 !important;
+        }
+        .effect-btn.disabled .slash-line {
+            opacity: 1;
         }
     </style>
     </head>
-    <body class="pb-20 min-h-screen flex flex-col">
 
-        <!-- NEW HEADER -->
+    <body class="pb-20 min-h-screen flex flex-col pt-[100px] md:pt-[120px]">
+
+        <!-- HEADER -->
         <div class="fixed top-0 left-0 w-full z-50">
             <header
-                class="bg-[#020617]/95 backdrop-blur shadow-xl border-b border-slate-800">
-                <!-- Increased width to 95% for maximum space usage -->
+                class="bg-[#020617]/95 backdrop-blur-md shadow-2xl border-b border-slate-800 relative z-50">
                 <div
-                    class="w-[95%] max-w-[1920px] mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
-                    <!-- Title Section -->
-                    <div
-                        class="flex items-stretch gap-4 self-start sm:self-center">
-                        <!-- Vertical Line covering both lines -->
-                        <div
-                            class="w-1.5 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] self-stretch"></div>
+                    class="w-full max-w-[98%] mx-auto px-4 md:px-6 py-3 flex justify-between items-center gap-3 md:gap-4">
 
-                        <div class="flex flex-col">
+                    <!-- Title -->
+                    <div
+                        class="flex items-center gap-3 md:gap-4 flex-shrink-1 min-w-0">
+                        <div
+                            class="w-1 h-8 md:w-1.5 md:h-10 bg-blue-500 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.5)] flex-shrink-0"></div>
+                        <div class="min-w-0">
                             <h1
-                                class="text-xl md:text-2xl font-black tracking-wide text-white uppercase leading-none">
-                                TIME & TENSE <span
-                                    class="text-blue-400">PRACTICE</span>
-                            </h1>
+                                class="text-lg md:text-2xl font-black text-white uppercase leading-none tracking-tight truncate">TIME
+                                & TENSE</h1>
                             <p
-                                class="text-xs md:text-sm font-bold text-slate-400 tracking-[0.15em] mt-1 uppercase leading-tight">
-                                By Chiranjibi Sir
-                            </p>
+                                class="text-[10px] md:text-xs font-bold text-slate-400 tracking-[0.15em] uppercase mt-1 truncate">Classroom
+                                Mode</p>
                         </div>
                     </div>
 
-                    <!-- Controls -->
-                    <div
-                        class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                    <!-- Right Side Controls: Home + Tools -->
+                    <div class="flex items-center gap-2 md:gap-3 flex-shrink-0">
 
-                        <div
-                            class="relative group flex-1 sm:flex-none sm:w-auto">
-                            <select id="paper-select" onchange="renderQuiz()"
-                                class="w-full sm:w-auto appearance-none bg-slate-900 text-slate-100 border border-slate-700 hover:border-blue-400 pl-4 pr-10 py-2 rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all cursor-pointer shadow-sm">
-                                <option value="1">Set 1 (15 Qs)</option>
-                                <option value="2">Set 2 (15 Qs)</option>
-                                <option value="3">Set 3 (15 Qs)</option>
-                                <option value="4">Set 4 (15 Qs)</option>
-                                <option value="5">Set 5 (15 Qs)</option>
-                                <option value="6">Set 6 (15 Qs)</option>
-                                <option value="7">Set 7 (15 Qs)</option>
-                                <option value="8">Set 8 (15 Qs)</option>
-                                <option value="10">Set 10 (15 Qs)</option>
-                                <option value="11">Set 11 (15 Qs)</option>
-                                <option value="12">Set 12 (15 Qs)</option>
-                                <option value="13">Set 13 (21 Qs)</option>
-                            </select>
-                            <div
-                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400 group-hover:text-blue-400 transition-colors">
-                                <svg class="fill-current h-4 w-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"><path
-                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>
-                            </div>
-                        </div>
-
+                        <!-- HOME BUTTON -->
                         <a href="index.html"
-                            class="group flex items-center justify-center w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 hover:border-blue-500 hover:bg-blue-500/10 transition-all duration-300 shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] shrink-0"
-                            title="Back to Home">
+                            class="group flex items-center justify-center w-10 h-10 md:w-11 md:h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-400 hover:text-white"
+                            title="Go to Home">
                             <svg xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24" fill="currentColor"
-                                class="w-5 h-5 text-slate-400 group-hover:text-blue-400 transition-colors"><path
-                                    d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" /><path
-                                    d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" /></svg>
+                                class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2"
+                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
                         </a>
+
+                        <!-- Teacher Controls Toggle -->
+                        <button onclick="toggleMenu()" id="menu-toggle-btn"
+                            class="group flex items-center gap-2 px-3 md:px-5 py-2 md:py-2.5 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shrink-0 shadow-lg cursor-pointer h-10 md:h-auto">
+                            <!-- Hidden on small screens to save space -->
+                            <span
+                                class="hidden sm:inline text-xs md:text-sm font-bold text-slate-300 group-hover:text-white tracking-wide">TOOLS</span>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="h-5 w-5 text-slate-400 group-hover:text-blue-400"
+                                fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </header>
 
-            <!-- Progress Bar -->
-            <div class="w-full h-1.5 bg-slate-800">
-                <div id="progress-fill"
-                    class="h-full bg-gradient-to-r from-blue-500 to-emerald-400 w-0 shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-500 ease-out"
-                    style="width: 0%;"></div>
+            <!-- SLIDING MENU (RESPONSIVE) -->
+            <div id="teacher-menu"
+                class="absolute top-[100%] left-0 w-full bg-[#0f172a] border-b border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-40 py-6 px-4 md:py-8 md:px-6 max-h-[85vh] overflow-y-auto">
+                <div
+                    class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-10">
+                    <!-- Reduced gap-6 to gap-4 for mobile -->
+
+                    <!-- SECTION 1: Standard Sets -->
+                    <div class="space-y-4">
+                        <h3
+                            class="text-blue-400 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Select
+                            Set</h3>
+                        <div class="grid grid-cols-3 gap-2 md:gap-3">
+                            <!-- Tighter gap on mobile -->
+                            <button onclick="selectSet(1)" id="btn-set-1"
+                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all text-sm md:text-base">Set
+                                1</button>
+                            <button onclick="selectSet(2)" id="btn-set-2"
+                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all text-sm md:text-base">Set
+                                2</button>
+                            <button onclick="selectSet(3)" id="btn-set-3"
+                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all text-sm md:text-base">Set
+                                3</button>
+                            <button onclick="selectSet(4)" id="btn-set-4"
+                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all text-sm md:text-base">Set
+                                4</button>
+                            <button onclick="selectSet(5)" id="btn-set-5"
+                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all text-sm md:text-base">Set
+                                5</button>
+                            <button onclick="selectSet(6)" id="btn-set-6"
+                                class="py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all text-sm md:text-base">Set
+                                6</button>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 2: Filters (COMPACT) -->
+                    <div class="space-y-4">
+                        <h3
+                            class="text-indigo-400 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Sequence
+                            Filters</h3>
+                        <!-- Removed fixed height h-[116px] for better responsiveness -->
+                        <div class="flex gap-4">
+                            <button onclick="setMode('odd')" id="btn-odd"
+                                class="flex-1 py-3 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-xl hover:text-white hover:bg-slate-700 hover:border-indigo-500 flex items-center justify-center transition-all text-2xl md:text-5xl">
+                                O
+                            </button>
+                            <button onclick="setMode('even')" id="btn-even"
+                                class="flex-1 py-3 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-xl hover:text-white hover:bg-slate-700 hover:border-indigo-500 flex items-center justify-center transition-all text-2xl md:text-5xl">
+                                E
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 3: Random -->
+                    <div class="space-y-4">
+                        <h3
+                            class="text-emerald-500 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Randomizer</h3>
+                        <div class="flex flex-col gap-3">
+                            <div class="flex gap-2 h-12">
+                                <div class="relative w-24">
+                                    <input type="number" id="random-count"
+                                        placeholder="10" value="10"
+                                        class="w-full h-full bg-slate-800 border border-slate-700 rounded-lg pl-3 pr-2 text-white font-bold focus:border-emerald-500 focus:outline-none text-center">
+                                    <span
+                                        class="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-slate-500 font-bold">Qs</span>
+                                </div>
+                                <button onclick="generateRandom()"
+                                    id="btn-random"
+                                    class="flex-1 bg-emerald-900/10 hover:bg-emerald-600 border border-emerald-900 hover:border-emerald-500 text-emerald-500 hover:text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-5 w-5" fill="none"
+                                        viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    </svg>
+                                    GENERATE
+                                </button>
+                            </div>
+                            <p
+                                class="text-slate-500 text-[11px] leading-relaxed">Generates
+                                a unique test from the pool of 60 questions.
+                                Options are automatically shuffled.</p>
+                        </div>
+                    </div>
+
+                    <!-- SECTION 4: Effects (COMPACT) -->
+                    <div class="space-y-4">
+                        <h3
+                            class="text-pink-500 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Effects</h3>
+                        <!-- Removed fixed height -->
+                        <div class="flex gap-4">
+                            <!-- Sound Toggle -->
+                            <button onclick="toggleSound()"
+                                id="btn-sound-toggle"
+                                class="effect-btn flex-1 py-3 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-xl hover:text-white hover:bg-slate-700 hover:border-pink-500 flex items-center justify-center transition-all text-2xl md:text-5xl">
+                                <span class="relative z-10">🔊</span>
+                                <div class="slash-line"></div>
+                            </button>
+                            <!-- Confetti Toggle -->
+                            <button onclick="toggleConfetti()"
+                                id="btn-confetti-toggle"
+                                class="effect-btn flex-1 py-3 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-xl hover:text-white hover:bg-slate-700 hover:border-pink-500 flex items-center justify-center transition-all text-2xl md:text-5xl">
+                                <span class="relative z-10">🎉</span>
+                                <div class="slash-line"></div>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
 
-        <!-- Spacer for fixed header -->
-        <div class="h-32 md:h-24 w-full"></div>
-
-        <!-- Quiz Container -->
+        <!-- MAIN CONTENT -->
         <main id="quiz-container"
-            class="w-[95%] max-w-[1920px] mx-auto px-4 py-6 space-y-6 flex-grow">
-            <!-- Questions will be injected here by JS -->
+            class="w-full max-w-[98%] mx-auto px-4 space-y-4 flex-grow">
+            <!-- Questions injected here -->
         </main>
 
+        <!-- JS LOGIC -->
         <script>
-        const quizData = [
-            { q: "Only one of the boys ……………….. not done the home-work given yesterday.", options: ["have", "had", "can", "could"], answer: 1 }, // had
-            { q: "It is time we .......………….. with determination.", options: ["act", "acted", "have acted", "will act"], answer: 1 }, // acted
-            { q: "When the thief entered the house, the inmates ................ in the hall.", options: ["were sleeping", "slept", "were slept", "had been sleeping"], answer: 0 }, // were sleeping
-            { q: "The thief explained how he ……………………. from the jail.", options: ["escapes", "had escaped", "escaped", "has escaped"], answer: 1 }, // had escaped
-            { q: "They did not know where they …………….… from.", options: ["come", "had come", "has come", "had came"], answer: 1 }, // had come
-            { q: "Madhu has not been able to recall where …………………………..", options: ["does she live", "she lived", "did she live", "lived the girl"], answer: 1 }, // she lived
-            { q: "When he died, Ramanujan ………………………. behind 3 notebooks.", options: ["was leaving", "had left", "leave", "leaves"], answer: 1 }, // had left
-            { q: "All the applicants …………… and the results will be announced next week.", options: ["rank", "are to rank", "are to be ranked", "are ranking"], answer: 2 }, // are to be ranked
-            { q: "Tourists always enjoyed ………………….. the setting Sun in the Darjeeling hills.", options: ["to watch", "watching", "in seeing", "seeing"], answer: 1 }, // watching (enjoy + gerund)
-            { q: "Ramappa ……………………… as the mayor of the town and he will assume charge this Friday.", options: ["elects", "has been elected", "is elected", "is electing"], answer: 1 }, // has been elected
-            { q: "Just as in a family it is the willing cooperation of its members that ……………… happiness and contentment, so is it in the larger family of the nation.", options: ["brought", "will bring", "bring", "bought"], answer: 1 }, // will bring
-            { q: "The old man could not remember where he ......... his money.", options: ["deposits", "is depositing", "had deposited", "will deposit"], answer: 2 }, // had deposited
-            { q: "Hamid …………………….. in Mumbai for three years when his parents came to visit.", options: ["had lived", "had lived", "was living", "had been living"], answer: 3 }, // had been living
-            { q: "Two years have passed since he ………………………. here.", options: ["has come", "come", "came", "had come"], answer: 2 }, // came
-            { q: "Will those of you who have objections to this proposal………. put up your hands, please?", options: ["discussed", "being discussed", "having discussed", "discussing"], answer: 1 }, // being discussed
-            { q: "She had frequent toothaches. So she decided to …………………………", options: ["remove her teeth", "removing her teeth", "have her teeth removed", "having her teeth removed"], answer: 2 }, // have her teeth removed
-            { q: "The mechanic …………………….. the vehicle since this morning.", options: ["repaired", "repairing", "has been repairing", "will be repairing"], answer: 2 }, // has been repairing
-            { q: "If I had worked here, I ………………….. very high marks in the examination.", options: ["scored", "would score", "could score", "would have scored"], answer: 3 }, // would have scored
-            { q: "I got used ……………………… on the right when I was in the U.S. for two years.", options: ["driving", "to drive", "to driving", "by driving"], answer: 2 }, // to driving
-            { q: "Had you told me earlier I …………………….. the meeting.", options: ["had attended", "have attended", "attended", "would have attended"], answer: 3 }, // would have attended
-            { q: "There will be a rush for seats when the train …………………………...", options: ["will arrive", "arrived", "is arriving", "arrives"], answer: 3 }, // arrives
-            { q: "By the time I reach America, it ……………………. morning.", options: ["is", "will have become", "must be", "was"], answer: 1 }, // will have become
-            { q: "She feared that she……………………………..", options: ["will fail", "may fail", "fails", "failed"], answer: 1 }, // may fail
-            { q: "I was washing my face as the insect .................... quietly into the bedroom.", options: ["crept", "creeps", "was creeping", "has crept"], answer: 0 }, // crept
-            { q: "During the recent floods two thirds of our city …………….... in ruins.", options: ["are", "were", "is", "was"], answer: 3 }, // was
-            { q: "I have ……………………….. Lakshmi for the past twelve years.", options: ["know", "knew", "known", "knows"], answer: 2 }, // known
-            { q: "The engineers ………………………. this bridge since last year.", options: ["have repaired", "had repaired", "have been repairing", "are repairing"], answer: 2 }, // have been repairing
-            { q: "If I had helped him, he …………………", options: ["will not be drowned", "would not be drowned", "will not have drowned", "would not have drowned"], answer: 3 }, // would not have drowned
-            { q: "The housewife ……………………. cakes burning, and ran to switch off the oven.", options: ["smell", "smells", "smelt", "smelling"], answer: 2 }, // smelt
-            { q: "If you had followed the rules, you………………………. disqualified.", options: ["will not be", "would not be", "will not have been", "would not have been"], answer: 3 }, // would not have been
-            { q: "The farmers …………….. their farms, if they had known that a thunderstorm was approaching.", options: ["will leave", "would leave", "will have left", "would have left"], answer: 3 }, // would have left
-            { q: "………………… you hear the President’s speech ?", options: ["Have", "Has", "Had", "Did"], answer: 3 }, // Did
-            { q: "I …………………… to the movies with some friends last night.", options: ["have gone", "went", "am gone", "am going"], answer: 1 }, // went
-            { q: "If I ………………………. a doctor, I would serve the poor,", options: ["am", "had been", "were", "was"], answer: 2 }, // were
-            { q: "The plane will take off when the thunderstorm ……………………….", options: ["stops", "stopped", "would stop", "will stop"], answer: 0 }, // stops
-            { q: "When the doctor………………………….; the patient was already……………………………..", options: ["arrived; died", "arrived; dead", "arrive; dead", "arriving; dying"], answer: 1 }, // arrived; dead
-            { q: "If you litter, you………………………. to pay a fine.", options: ["will have", "would have", "will had", "would had"], answer: 0 }, // will have
-            { q: "The life-guard would not let the children………………… at the deep end of the pool.", options: ["swims", "swim", "swam", "to swim"], answer: 1 }, // swim
-            { q: "The audience watched the clowns…………………………..", options: ["performs", "perform", "performed", "are performing"], answer: 1 }, // perform
-            { q: "We shall go for a picnic if the weather……………………..good.", options: ["is", "was", "has been", "had been"], answer: 0 }, // is
-            { q: "I …………………. hard to establish the validity of the theory since morning.", options: ["have been trying", "had tried", "tried", "am trying"], answer: 0 }, // have been trying
-            { q: "I wish I ………………………… her to clean the room.", options: ["have asking", "have asked", "asked", "had asked"], answer: 3 }, // had asked
-            { q: "Simon …………………….. very polite at the moment, because he wants to make a good impression.", options: ["was being", "has been", "is behaving", "is being"], answer: 3 }, // is being
-            { q: "Had I saved money, I ………………………….. a new car.", options: ["will purchase", "would purchase", "would have purchased", "purchased"], answer: 2 }, // would have purchased
-            { q: "He told me that he ……………………… the movie.", options: ["is finished", "was finished", "had finished", "not finished"], answer: 2 }, // had finished
-            { q: "The railway coaches …………………………. by the Integral Coach Factory, Chennai.", options: ["is manufactured", "are manufactured", "are manufacture", "is being manufactured"], answer: 1 }, // are manufactured
-            { q: "The car broke down and we …………………… get a taxi.", options: ["were to", "are to", "had to", "have to"], answer: 2 }, // had to
-            { q: "He said I …………………. use his car when ever I wanted.", options: ["could", "can", "will", "would"], answer: 0 }, // could
-            { q: "While he was working at the site, a block of wood suddenly ………… his right shoulder.", options: ["was hitted", "was hit", "had hitted", "hit"], answer: 3 }, // hit
-            { q: "In the tragic incident, none of the 145 passengers ……………………….", options: ["could survived", "survive", "survived", "is surviving"], answer: 2 }, // survived
-            { q: "I asked him for some paper, but he ……………………..", options: ["had not", "has not", "had none", "has none"], answer: 2 }, // had none
-            { q: "Did the child ………………….. from the chair?", options: ["fell", "fallen", "falling", "fall"], answer: 3 }, // fall
-            { q: "Work hard so that you …………………………. (Purpose)", options: ["shall get good marks", "will get good marks", "may get good marks", "should get good marks"], answer: 2 }, // may get
-            { q: "The officer …………………. the car to speak to the driver.", options: ["stops", "has stopped", "stopped", "had stopped"], answer: 2 }, // stopped
-            { q: "Thank God! We reached. If there .......... jam on the highway, we would have been late for the reception.", options: ["had been", "would have been", "was", "were"], answer: 0 }, // had been
-            { q: "If you ............ me up earlier, we would have gone there together.", options: ["woke", "had woken", "wake", "wakes"], answer: 1 }, // had woken
-            { q: "Last night the residents .............. to discuss the occurrence of theft in the locality.", options: ["assembled", "had assembled", "have assembled", "were assembling"], answer: 0 }, // assembled
-            { q: "The students decided to donate blood after they ............ the plight of the injured in various accidents in a documentary film.", options: ["saw", "had seen", "had been seen", "had been seeing"], answer: 1 }, // had seen
-            { q: "The newspaper ............ seven cases of gruesome crime in the city yesterday.", options: ["reported", "has reported", "had reported", "have reported"], answer: 0 }, // reported
-            { q: "An enquiry committee has been formed as devastating poverty and indebtedness .............. farmers in the country to commit suicide.", options: ["forced", "has forced", "force", "forces"], answer: 1 } // has forced
+        // FULL DATASET
+        const fullDB = [
+            { q: "Only one of the boys ……………….. not done the home-work given yesterday.", options: ["have", "had", "can", "could"], answer: 1 },
+            { q: "It is time we .......………….. with determination.", options: ["act", "acted", "have acted", "will act"], answer: 1 },
+            { q: "When the thief entered the house, the inmates ................ in the hall.", options: ["were sleeping", "slept", "were slept", "had been sleeping"], answer: 0 },
+            { q: "The thief explained how he ……………………. from the jail.", options: ["escapes", "had escaped", "escaped", "has escaped"], answer: 1 },
+            { q: "They did not know where they …………….… from.", options: ["come", "had come", "has come", "had came"], answer: 1 },
+            { q: "Madhu has not been able to recall where …………………………..", options: ["does she live", "she lived", "did she live", "lived the girl"], answer: 1 },
+            { q: "When he died, Ramanujan ………………………. behind 3 notebooks.", options: ["was leaving", "had left", "leave", "leaves"], answer: 1 },
+            { q: "All the applicants …………… and the results will be announced next week.", options: ["rank", "are to rank", "are to be ranked", "are ranking"], answer: 2 },
+            { q: "Tourists always enjoyed ………………….. the setting Sun in the Darjeeling hills.", options: ["to watch", "watching", "in seeing", "seeing"], answer: 1 },
+            { q: "Ramappa ……………………… as the mayor of the town and he will assume charge this Friday.", options: ["elects", "has been elected", "is elected", "is electing"], answer: 1 },
+            { q: "Just as in a family it is the willing cooperation of its members that ……………… happiness and contentment, so is it in the larger family of the nation.", options: ["brought", "will bring", "bring", "bought"], answer: 1 },
+            { q: "The old man could not remember where he ......... his money.", options: ["deposits", "is depositing", "had deposited", "will deposit"], answer: 2 },
+            { q: "Hamid …………………….. in Mumbai for three years when his parents came to visit.", options: ["had lived", "had lived", "was living", "had been living"], answer: 3 },
+            { q: "Two years have passed since he ………………………. here.", options: ["has come", "come", "came", "had come"], answer: 2 },
+            { q: "Will those of you who have objections to this proposal………. put up your hands, please?", options: ["discussed", "being discussed", "having discussed", "discussing"], answer: 1 },
+            { q: "She had frequent toothaches. So she decided to …………………………", options: ["remove her teeth", "removing her teeth", "have her teeth removed", "having her teeth removed"], answer: 2 },
+            { q: "The mechanic …………………….. the vehicle since this morning.", options: ["repaired", "repairing", "has been repairing", "will be repairing"], answer: 2 },
+            { q: "If I had worked here, I ………………….. very high marks in the examination.", options: ["scored", "would score", "could score", "would have scored"], answer: 3 },
+            { q: "I got used ……………………… on the right when I was in the U.S. for two years.", options: ["driving", "to drive", "to driving", "by driving"], answer: 2 },
+            { q: "Had you told me earlier I …………………….. the meeting.", options: ["had attended", "have attended", "attended", "would have attended"], answer: 3 },
+            { q: "There will be a rush for seats when the train …………………………...", options: ["will arrive", "arrived", "is arriving", "arrives"], answer: 3 },
+            { q: "By the time I reach America, it ……………………. morning.", options: ["is", "will have become", "must be", "was"], answer: 1 },
+            { q: "She feared that she……………………………..", options: ["will fail", "may fail", "fails", "failed"], answer: 1 },
+            { q: "I was washing my face as the insect .................... quietly into the bedroom.", options: ["crept", "creeps", "was creeping", "has crept"], answer: 0 },
+            { q: "During the recent floods two thirds of our city …………….... in ruins.", options: ["are", "were", "is", "was"], answer: 3 },
+            { q: "I have ……………………….. Lakshmi for the past twelve years.", options: ["know", "knew", "known", "knows"], answer: 2 },
+            { q: "The engineers ………………………. this bridge since last year.", options: ["have repaired", "had repaired", "have been repairing", "are repairing"], answer: 2 },
+            { q: "If I had helped him, he …………………", options: ["will not be drowned", "would not be drowned", "will not have drowned", "would not have drowned"], answer: 3 },
+            { q: "The housewife ……………………. cakes burning, and ran to switch off the oven.", options: ["smell", "smells", "smelt", "smelling"], answer: 2 },
+            { q: "If you had followed the rules, you………………………. disqualified.", options: ["will not be", "would not be", "will not have been", "would not have been"], answer: 3 },
+            { q: "The farmers …………….. their farms, if they had known that a thunderstorm was approaching.", options: ["will leave", "would leave", "will have left", "would have left"], answer: 3 },
+            { q: "………………… you hear the President’s speech ?", options: ["Have", "Has", "Had", "Did"], answer: 3 },
+            { q: "I …………………… to the movies with some friends last night.", options: ["have gone", "went", "am gone", "am going"], answer: 1 },
+            { q: "If I ………………………. a doctor, I would serve the poor,", options: ["am", "had been", "were", "was"], answer: 2 },
+            { q: "The plane will take off when the thunderstorm ……………………….", options: ["stops", "stopped", "would stop", "will stop"], answer: 0 },
+            { q: "When the doctor………………………….; the patient was already……………………………..", options: ["arrived; died", "arrived; dead", "arrive; dead", "arriving; dying"], answer: 1 },
+            { q: "If you litter, you………………………. to pay a fine.", options: ["will have", "would have", "will had", "would had"], answer: 0 },
+            { q: "The life-guard would not let the children………………… at the deep end of the pool.", options: ["swims", "swim", "swam", "to swim"], answer: 1 },
+            { q: "The audience watched the clowns…………………………..", options: ["performs", "perform", "performed", "are performing"], answer: 1 },
+            { q: "We shall go for a picnic if the weather……………………..good.", options: ["is", "was", "has been", "had been"], answer: 0 },
+            { q: "I …………………. hard to establish the validity of the theory since morning.", options: ["have been trying", "had tried", "tried", "am trying"], answer: 0 },
+            { q: "I wish I ………………………… her to clean the room.", options: ["have asking", "have asked", "asked", "had asked"], answer: 3 },
+            { q: "Simon …………………….. very polite at the moment, because he wants to make a good impression.", options: ["was being", "has been", "is behaving", "is being"], answer: 3 },
+            { q: "Had I saved money, I ………………………….. a new car.", options: ["will purchase", "would purchase", "would have purchased", "purchased"], answer: 2 },
+            { q: "He told me that he ……………………… the movie.", options: ["is finished", "was finished", "had finished", "not finished"], answer: 2 },
+            { q: "The railway coaches …………………………. by the Integral Coach Factory, Chennai.", options: ["is manufactured", "are manufactured", "are manufacture", "is being manufactured"], answer: 1 },
+            { q: "The car broke down and we …………………… get a taxi.", options: ["were to", "are to", "had to", "have to"], answer: 2 },
+            { q: "He said I …………………. use his car when ever I wanted.", options: ["could", "can", "will", "would"], answer: 0 },
+            { q: "While he was working at the site, a block of wood suddenly ………… his right shoulder.", options: ["was hitted", "was hit", "had hitted", "hit"], answer: 3 },
+            { q: "In the tragic incident, none of the 145 passengers ……………………….", options: ["could survived", "survive", "survived", "is surviving"], answer: 2 },
+            { q: "I asked him for some paper, but he ……………………..", options: ["had not", "has not", "had none", "has none"], answer: 2 },
+            { q: "Did the child ………………….. from the chair?", options: ["fell", "fallen", "falling", "fall"], answer: 3 },
+            { q: "Work hard so that you …………………………. (Purpose)", options: ["shall get good marks", "will get good marks", "may get good marks", "should get good marks"], answer: 2 },
+            { q: "The officer …………………. the car to speak to the driver.", options: ["stops", "has stopped", "stopped", "had stopped"], answer: 2 },
+            { q: "Thank God! We reached. If there .......... jam on the highway, we would have been late for the reception.", options: ["had been", "would have been", "was", "were"], answer: 0 },
+            { q: "If you ............ me up earlier, we would have gone there together.", options: ["woke", "had woken", "wake", "wakes"], answer: 1 },
+            { q: "Last night the residents .............. to discuss the occurrence of theft in the locality.", options: ["assembled", "had assembled", "have assembled", "were assembling"], answer: 0 },
+            { q: "The students decided to donate blood after they ............ the plight of the injured in various accidents in a documentary film.", options: ["saw", "had seen", "had been seen", "had been seeing"], answer: 1 },
+            { q: "The newspaper ............ seven cases of gruesome crime in the city yesterday.", options: ["reported", "has reported", "had reported", "have reported"], answer: 0 },
+            { q: "An enquiry committee has been formed as devastating poverty and indebtedness .............. farmers in the country to commit suicide.", options: ["forced", "has forced", "force", "forces"], answer: 1 }
         ];
 
-        let answeredCount = 0;
-        let totalCurrentQuestions = 0;
+        // STATE
+        let currentMode = 'set'; // set, odd, even, random
+        let activeQuestions = [];
+        let currentSet = 1;
+        let soundEnabled = true;
+        let confettiEnabled = true;
 
+        // AUDIO CONTEXT SETUP
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSuccessSound() {
+            if (!soundEnabled) return;
+            // Resume context if suspended (browser policy)
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const now = audioCtx.currentTime;
+
+            // Create three oscillators for a chord (C Major: C5, E5, G5)
+            [523.25, 659.25, 783.99].forEach((freq, i) => {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                
+                // Envelope
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.1, now + 0.05); // Attack
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5); // Decay
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                // Stagger slightly for a strum effect
+                osc.start(now + (i * 0.05));
+                osc.stop(now + 0.6);
+            });
+        }
+
+        function playErrorSound() {
+            if (!soundEnabled) return;
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, now); // Low pitch
+            osc.frequency.linearRampToValueAtTime(100, now + 0.3); // Pitch drop
+
+            gain.gain.setValueAtTime(0.1, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.4);
+        }
+        
+        // 1. INITIALIZE
+        function init() {
+            selectSet(1);
+        }
+
+        // 2. TOGGLE MENU
+        function toggleMenu() {
+            document.getElementById('teacher-menu').classList.toggle('open');
+        }
+
+        // Helper to close menu
+        function closeMenu() {
+            document.getElementById('teacher-menu').classList.remove('open');
+        }
+
+        // 3. SET HANDLER (Button Grid)
+        function selectSet(setNum) {
+            currentSet = setNum;
+            
+            // Logic: Set 1 = 0-9, Set 2 = 10-19...
+            const start = (setNum - 1) * 10;
+            const end = start + 10;
+            
+            activeQuestions = fullDB.slice(start, end);
+            currentMode = 'set';
+            
+            updateButtonStyles();
+            renderQuiz();
+            closeMenu(); // Close after selection
+        }
+
+        // 4. SPECIAL MODES (Filter Buttons)
+        function setMode(mode) {
+            currentMode = mode;
+            
+            if (mode === 'odd') {
+                activeQuestions = fullDB.filter((_, i) => (i + 1) % 2 !== 0);
+            } else if (mode === 'even') {
+                activeQuestions = fullDB.filter((_, i) => (i + 1) % 2 === 0);
+            }
+            
+            updateButtonStyles();
+            renderQuiz();
+            closeMenu(); // Close after selection
+        }
+
+        function generateRandom() {
+            const countInput = document.getElementById('random-count').value;
+            const count = parseInt(countInput) || 10; 
+
+            const shuffled = [...fullDB].sort(() => 0.5 - Math.random());
+            activeQuestions = shuffled.slice(0, count);
+
+            currentMode = 'random';
+            updateButtonStyles();
+            renderQuiz();
+            closeMenu(); // Close after selection
+        }
+
+        function updateButtonStyles() {
+            // 1. Reset ALL buttons (Sets, Odd/Even, Random)
+            const allBtnIds = [
+                'btn-set-1', 'btn-set-2', 'btn-set-3', 'btn-set-4', 'btn-set-5', 'btn-set-6',
+                'btn-odd', 'btn-even', 'btn-random'
+            ];
+            
+            allBtnIds.forEach(id => {
+                const el = document.getElementById(id);
+                if(el) {
+                    el.classList.remove('btn-active');
+                }
+            });
+
+            // 2. Highlight Active
+            if (currentMode === 'set') {
+                const id = `btn-set-${currentSet}`;
+                document.getElementById(id).classList.add('btn-active');
+            } else if (currentMode === 'odd') {
+                document.getElementById('btn-odd').classList.add('btn-active');
+            } else if (currentMode === 'even') {
+                document.getElementById('btn-even').classList.add('btn-active');
+            } else if (currentMode === 'random') {
+                document.getElementById('btn-random').classList.add('btn-active');
+            }
+        }
+
+        // 4.5 EFFECT TOGGLES
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('btn-sound-toggle');
+            if (soundEnabled) {
+                btn.classList.remove('disabled');
+            } else {
+                btn.classList.add('disabled');
+            }
+        }
+
+        function toggleConfetti() {
+            confettiEnabled = !confettiEnabled;
+            const btn = document.getElementById('btn-confetti-toggle');
+            if (confettiEnabled) {
+                btn.classList.remove('disabled');
+            } else {
+                btn.classList.add('disabled');
+            }
+        }
+
+
+        // 5. SHUFFLE OPTIONS LOGIC
+        function getShuffledOptionsObj(questionItem) {
+            const correctText = questionItem.options[questionItem.answer];
+            let opts = questionItem.options.map((opt, i) => ({ text: opt, originalIndex: i }));
+            opts.sort(() => Math.random() - 0.5);
+            const newAnswerIndex = opts.findIndex(o => o.text === correctText);
+            return { shuffledOptions: opts.map(o => o.text), newAnswerIndex: newAnswerIndex };
+        }
+
+        // 6. RENDER - STRICTLY UPDATED TO USER SNIPPET
         function renderQuiz() {
             const container = document.getElementById('quiz-container');
-            const select = document.getElementById('paper-select');
-            const groupValue = parseInt(select.value);
-            
-            // Logic for pages:
-            // Value 1 -> Page 1 (0-15)
-            // Value 2 -> Page 2 (15-30)
-            const itemsPerPage = 15;
-            // Adjust for 0-based index since dropdown starts at 1
-            const pageIndex = groupValue - 1; 
-            const start = pageIndex * itemsPerPage;
-            const end = start + itemsPerPage;
-            
-            const currentQuestions = quizData.slice(start, end);
-            
-            // Reset Progress for new page
-            answeredCount = 0;
-            totalCurrentQuestions = currentQuestions.length;
-            updateProgressBar();
-
             container.innerHTML = '';
-
-            if (currentQuestions.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center p-10 bg-[#1e293b] rounded-2xl border-2 border-slate-700">
-                        <h3 class="text-xl text-slate-400 font-bold">No questions available for this set yet.</h3>
-                        <p class="text-slate-500 mt-2">Please select Set 1, 2, 3, or 4.</p>
-                    </div>
-                `;
+            
+            if (activeQuestions.length === 0) {
+                container.innerHTML = `<div class="text-center py-20 text-slate-500">No questions found.</div>`;
                 return;
             }
 
-            currentQuestions.forEach((item, i) => {
-                const absIndex = start + i;
-                
-                const questionCard = document.createElement('div');
-                // Unique ID for the question card to track answered state
-                questionCard.dataset.answered = "false";
-                questionCard.className = "bg-[#1e293b] rounded-xl md:rounded-2xl shadow-2xl border-2 border-slate-700 overflow-hidden";
-                
-                // Question Header
-                const qHeader = document.createElement('div');
-                qHeader.className = "bg-[#0f172a] px-4 py-3 md:px-6 md:py-4 border-b border-slate-700 flex gap-3 md:gap-4 items-start";
-                
-                const qNum = document.createElement('span');
-                qNum.className = "font-black text-blue-400 text-lg md:text-xl whitespace-nowrap mt-0.5 bg-blue-900/30 px-3 py-1 rounded-lg border border-blue-800 shadow-[0_0_10px_rgba(30,58,138,0.5)]";
-                qNum.textContent = `Q${absIndex + 1}`;
-                
-                const qText = document.createElement('p');
-                qText.className = "text-white font-bold text-lg md:text-xl leading-relaxed tracking-wide pt-0.5";
-                qText.textContent = item.q;
+            activeQuestions.forEach((item, index) => {
+                const displayNum = index + 1;
+                const { shuffledOptions, newAnswerIndex } = getShuffledOptionsObj(item);
 
-                qHeader.appendChild(qNum);
-                qHeader.appendChild(qText);
+                // --- NEW CARD STRUCTURE START ---
+                // Outer Card: Slate 800 (#1e293b)
+                const card = document.createElement('div');
+                card.className = "bg-[#1e293b] rounded-xl md:rounded-2xl shadow-2xl border-2 border-slate-700 overflow-hidden";
+                card.setAttribute('data-answered', 'false');
+
+                // Header: Slate 900 (#0f172a) - Darker than card
+                const header = document.createElement('div');
+                header.className = "bg-[#0f172a] px-4 py-3 md:px-6 md:py-4 border-b border-slate-700 flex gap-3 md:gap-4 items-start";
+                
+                header.innerHTML = `
+                    <span class="font-black text-blue-400 text-lg md:text-xl whitespace-nowrap mt-0.5 bg-blue-900/30 px-3 py-1 rounded-lg border border-blue-800 shadow-[0_0_10px_rgba(30,58,138,0.5)]">Q${displayNum}</span>
+                    <p class="text-white font-bold text-lg md:text-xl leading-relaxed tracking-wide pt-0.5">${item.q}</p>
+                `;
 
                 // Options Container
-                const optionsDiv = document.createElement('div');
-                optionsDiv.className = "p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4";
+                const optsDiv = document.createElement('div');
+                optsDiv.className = "p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4";
 
-                item.options.forEach((opt, optIndex) => {
+                const letters = ['A', 'B', 'C', 'D'];
+                
+                shuffledOptions.forEach((optText, i) => {
                     const btn = document.createElement('button');
-                    const letters = ['A', 'B', 'C', 'D'];
-                    
-                    btn.className = `option-btn w-full text-left px-4 py-3 md:px-5 md:py-4 rounded-lg md:rounded-xl border-2 border-slate-600 text-slate-100 font-bold text-base md:text-lg bg-slate-800 hover:bg-slate-700 hover:border-slate-500 focus:outline-none relative overflow-hidden group flex items-center shadow-lg`;
+                    // Button Style: Slate 800 (Lighter than body) with Borders
+                    btn.className = "option-btn w-full text-left px-4 py-3 md:px-5 md:py-4 rounded-lg md:rounded-xl border-2 border-slate-600 text-slate-100 font-bold text-base md:text-lg bg-slate-800 hover:bg-slate-700 hover:border-slate-500 focus:outline-none relative overflow-hidden group flex items-center shadow-lg";
                     
                     btn.innerHTML = `
-                        <span class="badge-default inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-black mr-3 transition-colors shrink-0 group-hover:border-slate-400">${letters[optIndex]}</span>
-                        <span class="flex-1">${opt}</span>
+                        <span class="badge-default inline-flex items-center justify-center w-8 h-8 rounded-lg text-sm font-black mr-3 transition-colors shrink-0 group-hover:border-slate-400">${letters[i]}</span>
+                        <span class="flex-1">${optText}</span>
                     `;
-                    
-                    btn.onclick = (e) => checkAnswer(e.currentTarget, optIndex, item.answer, optionsDiv, questionCard);
-                    
-                    optionsDiv.appendChild(btn);
+
+                    btn.onclick = () => checkAnswer(btn, i, newAnswerIndex, optsDiv);
+                    optsDiv.appendChild(btn);
                 });
+                // --- NEW CARD STRUCTURE END ---
 
-                questionCard.appendChild(qHeader);
-                questionCard.appendChild(optionsDiv);
-                container.appendChild(questionCard);
+                card.appendChild(header);
+                card.appendChild(optsDiv);
+                container.appendChild(card);
             });
-            
-            window.scrollTo(0, 0);
         }
 
-        function checkAnswer(clickedBtn, selectedIndex, correctIndex, container, cardElement) {
-            // Get all buttons in this specific question
-            const allButtons = container.querySelectorAll('button');
-
-            // Check if this question was already answered to update progress count
-            if (cardElement.dataset.answered === "false") {
-                cardElement.dataset.answered = "true";
-                answeredCount++;
-                updateProgressBar();
-            }
-
-            // Reset all buttons in this card
-            allButtons.forEach(btn => {
+        // CLICK HANDLER: Clears previous highlights instantly
+        function checkAnswer(clickedBtn, selectedIndex, correctIndex, container) {
+            // 1. Reset ALL buttons in this specific question card first
+            const allBtns = container.querySelectorAll('.option-btn');
+            allBtns.forEach(btn => {
+                // Remove all color classes
                 btn.classList.remove('correct', 'wrong');
-                btn.classList.add('bg-slate-800', 'border-slate-600', 'text-slate-100');
+                // Re-add default styling classes if they were removed
+                btn.classList.add('border-slate-600', 'bg-slate-800', 'text-slate-100');
                 
-                const badge = btn.querySelector('span');
-                badge.classList.remove('badge-active');
-                badge.classList.add('badge-default');
+                // Reset Badge styles inside the button
+                const badge = btn.querySelector('.badge-default, .badge-active');
+                if(badge) {
+                     badge.classList.remove('badge-active');
+                     badge.classList.add('badge-default');
+                     badge.style.borderColor = ""; // Clear inline styles if any
+                     badge.style.color = "";
+                }
             });
 
-            // Apply logic based on selection
+            // 2. Apply color to the CLICKED button
+            // Remove default dark styling so color shines through
+            clickedBtn.classList.remove('border-slate-600', 'bg-slate-800', 'text-slate-100');
+
+            // Find and update badge
+            const badge = clickedBtn.querySelector('.badge-default');
+            if(badge) {
+                badge.classList.remove('badge-default');
+                badge.classList.add('badge-active');
+            }
+
             if (selectedIndex === correctIndex) {
-                styleButtonAsCorrect(clickedBtn);
+                clickedBtn.classList.add('correct');
+                
+                if (confettiEnabled) {
+                    // TRIGGER DUAL CONFETTI (Left & Right)
+                    const colors = ['#22c55e', '#ffffff', '#facc15'];
+                    
+                    // Left cannon
+                    confetti({
+                        particleCount: 150,
+                        spread: 100,
+                        origin: { x: 0, y: 0.8 }, // Lower origin
+                        angle: 60,
+                        startVelocity: 45,
+                        colors: colors,
+                        disableForReducedMotion: true
+                    });
+                    
+                    // Right cannon
+                    confetti({
+                        particleCount: 150,
+                        spread: 100,
+                        origin: { x: 1, y: 0.8 }, // Lower origin
+                        angle: 120,
+                        startVelocity: 45,
+                        colors: colors,
+                        disableForReducedMotion: true
+                    });
+                }
+                
+                playSuccessSound();
             } else {
-                styleButtonAsWrong(clickedBtn);
+                clickedBtn.classList.add('wrong');
+                playErrorSound();
             }
         }
 
-        function styleButtonAsCorrect(btn) {
-            btn.classList.remove('bg-slate-800', 'border-slate-600', 'text-slate-100', 'hover:bg-slate-700', 'hover:border-slate-500');
-            btn.classList.add('correct');
+        // GLOBAL CLICK LISTENER: Close menu if clicked outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('teacher-menu');
+            const toggleBtn = document.getElementById('menu-toggle-btn');
             
-            const badge = btn.querySelector('span');
-            badge.classList.remove('badge-default');
-            badge.classList.add('badge-active');
-        }
+            // If menu is open AND click is NOT inside menu AND click is NOT on the toggle button
+            if (menu.classList.contains('open') && !menu.contains(event.target) && !toggleBtn.contains(event.target)) {
+                closeMenu();
+            }
+        });
 
-        function styleButtonAsWrong(btn) {
-            btn.classList.remove('bg-slate-800', 'border-slate-600', 'text-slate-100', 'hover:bg-slate-700', 'hover:border-slate-500');
-            btn.classList.add('wrong');
-            
-            const badge = btn.querySelector('span');
-            badge.classList.remove('badge-default');
-            badge.classList.add('badge-active');
-        }
-
-        function updateProgressBar() {
-            if (totalCurrentQuestions === 0) return;
-            const percentage = (answeredCount / totalCurrentQuestions) * 100;
-            const fill = document.getElementById('progress-fill');
-            fill.style.width = `${percentage}%`;
-        }
-
-        // Initialize
-        renderQuiz();
+        // Run
+        init();
 
     </script>
+        <div
+            class="fixed bottom-3 w-full text-center pointer-events-none select-none z-0">
+            <p
+                class="text-slate-600 opacity-40 text-[10px] font-bold tracking-[0.2em] uppercase">Designed
+                by Subham Kumar Mallick</p>
+        </div>
     </body>
 </html>
