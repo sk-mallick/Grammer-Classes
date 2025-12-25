@@ -3,15 +3,23 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Subject-Verb Agreement Quiz</title>
+        <title>Syntax Practice - Classroom Edition</title>
         <script src="https://cdn.tailwindcss.com"></script>
+        <!-- Confetti Library -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
         <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
             rel="stylesheet">
+
         <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    screens: {
+                        'xs': '375px',
+                    },
                     colors: {
                         slate: {
                             850: '#1e293b',
@@ -19,195 +27,279 @@
                             950: '#020617',
                         }
                     },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                    animation: {
+                        'shake': 'shake 0.5s cubic-bezier(.36,.07,.19,.97) both',
+                        'pop': 'pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
+                    },
+                    keyframes: {
+                        shake: {
+                            '10%, 90%': { transform: 'translate3d(-1px, 0, 0)' },
+                            '20%, 80%': { transform: 'translate3d(2px, 0, 0)' },
+                            '30%, 50%, 70%': { transform: 'translate3d(-4px, 0, 0)' },
+                            '40%, 60%': { transform: 'translate3d(4px, 0, 0)' }
+                        },
+                        pop: {
+                            '0%': { transform: 'scale(0.8)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' }
+                        }
                     }
                 }
             }
         }
     </script>
+
         <style>
-        body {
-            background-color: #020617; /* Deep Midnight Blue */
-            color: #f8fafc; /* White Text */
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #020617; /* Slate 950 */
+            color: #ffffff; 
         }
 
-        /* Responsive Columns with Divider */
+        /* Hide number input arrows/spinners */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        input[type=number] {
+            -moz-appearance: textfield; /* Firefox */
+        }
+
         .quiz-columns {
-            column-count: 1;
-        }
-        @media (min-width: 1024px) {
-            .quiz-columns {
-                column-count: 2;
-                column-gap: 3rem; /* Adjusted gap for wider layout */
-            }
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem; /* Standardized gap */
         }
 
-        /* Fixed Dash Styling */
-        .blank-space {
-            display: inline-block;
-            width: 60px; /* Fixed width dash */
-            height: 1.2em;
-            border-bottom: 3px solid #64748b; /* Visible line */
+        /* Menu Animation */
+        #teacher-menu {
+            transform: translateY(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #teacher-menu.open {
+            transform: translateY(0);
+        }
+
+        /* Active Button State for Tools Menu */
+        .btn-active {
+            background-color: #16a34a !important;
+            border-color: #22c55e !important;
+            color: white !important;
+            box-shadow: 0 0 15px rgba(22, 163, 74, 0.4) !important;
+        }
+
+        /* Effect Toggle Styles */
+        .effect-btn {
             position: relative;
-            margin: 0 5px;
-            cursor: pointer;
-            vertical-align: bottom;
-            transition: border-color 0.2s;
-        }
-
-        .blank-space:hover {
-            border-bottom-color: #fbbf24; /* Amber on hover */
-        }
-
-        /* Answer Text Positioning - Floating Above */
-        .blank-space span.answer-text {
-            position: absolute;
-            bottom: 2px; /* Sits just above the line */
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap; /* Prevents breaking the line */
-            font-size: 0.9em;
-            font-weight: 800;
-            color: #34d399; /* Emerald Green */
-            opacity: 0; /* Hidden initially */
-            pointer-events: none;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Pop against background */
-            /* Add transition for smooth hiding */
-            transition: opacity 0.2s ease, transform 0.2s ease;
-        }
-
-        /* Reveal Animation */
-        .blank-space.revealed span.answer-text {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-            animation: slideUp 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-        }
-
-        .blank-space.revealed {
-            border-bottom-color: #34d399; /* Line turns green too */
-        }
-
-        @keyframes slideUp {
-            0% { transform: translate(-50%, 10px); opacity: 0; }
-            100% { transform: translate(-50%, 0); opacity: 1; }
-        }
-
-        .hint-text {
-            color: #94a3b8;
-            font-size: 0.7em;
-            margin-left: 6px;
-            font-weight: 600;
-            opacity: 0.8;
-        }
-
-        select option {
-            background-color: #0f172a;
-            color: #f8fafc;
-            padding: 10px;
+            overflow: hidden;
         }
         
-        /* Progress Bar Animation */
-        #progress-fill {
-            transition: width 0.3s ease-out;
+        .slash-line {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            height: 2px;
+            background-color: #ef4444;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            box-shadow: 0 0 2px rgba(0,0,0,0.8);
+            pointer-events: none;
+            display: none;
+            z-index: 10;
+        }
+        
+        .effect-disabled .slash-line {
+            display: block;
+        }
+        .effect-disabled {
+            opacity: 0.7;
+            background-color: #1e293b !important;
+        }
+        
+        /* Removed progress-fill style */
+
+        /* Blank Space in Sentence */
+        .sentence-blank {
+            display: inline-block;
+            /* FIX APPLIED: Increased min-width to prevent shrinking when filled */
+            min-width: 100px;
+            border-bottom-width: 2px;
+            border-color: #64748b; /* slate-500 */
+            color: transparent;
+            text-align: center;
+            padding: 0 4px;
+            transition: all 0.3s ease;
+            font-weight: 800;
+        }
+        
+        .sentence-blank.filled {
+            color: #34d399; /* emerald-400 */
+            border-color: #34d399;
         }
     </style>
     </head>
-    <body
-        class="min-h-screen pb-12 selection:bg-blue-500 selection:text-white pt-[116px]">
-        <!-- Added top padding to account for fixed header + progress -->
 
-        <!-- Header Wrapper (Fixed) -->
+    <body class="pb-20 min-h-screen flex flex-col pt-[70px] sm:pt-[90px]">
+
+        <!-- HEADER -->
         <div class="fixed top-0 left-0 w-full z-50">
             <header
-                class="bg-[#020617]/95 backdrop-blur shadow-xl border-b border-slate-800">
-                <!-- Increased width to 95% for maximum space usage -->
+                class="bg-[#020617]/95 backdrop-blur-md shadow-2xl border-b border-slate-800 relative z-50">
                 <div
-                    class="w-[95%] max-w-[1920px] mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+                    class="w-full max-w-[98%] mx-auto px-3 py-2 sm:px-6 sm:py-3 flex justify-between items-center gap-2 sm:gap-4 flex-nowrap">
+
                     <!-- Title Section -->
                     <div
-                        class="flex items-stretch gap-4 self-start sm:self-center">
-                        <!-- Vertical Line covering both lines -->
+                        class="flex items-stretch gap-2 sm:gap-4 self-center min-w-0">
                         <div
-                            class="w-1.5 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] self-stretch"></div>
+                            class="w-1 sm:w-1.5 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] self-stretch shrink-0"></div>
 
-                        <div class="flex flex-col">
+                        <div class="flex flex-col justify-center min-w-0">
                             <h1
-                                class="text-xl md:text-2xl font-black tracking-wide text-white uppercase leading-none">
+                                class="text-sm xs:text-base sm:text-xl md:text-2xl font-black tracking-wide text-white uppercase leading-none whitespace-nowrap overflow-hidden text-ellipsis">
                                 SYNTAX <span
-                                    class="text-blue-400">PRACTICE</span>
+                                    class="text-blue-400 hidden xs:inline">PRACTICE</span>
                             </h1>
                             <p
-                                class="text-xs md:text-sm font-bold text-slate-400 tracking-[0.15em] mt-1 uppercase leading-tight">
+                                class="text-[9px] xs:text-[10px] sm:text-xs md:text-sm font-bold text-slate-400 tracking-[0.15em] mt-0.5 sm:mt-1 uppercase leading-tight truncate">
                                 By Chiranjibi Sir
                             </p>
                         </div>
                     </div>
 
-                    <!-- Controls -->
+                    <!-- Right Side Controls -->
                     <div
-                        class="flex items-center gap-3 w-full sm:w-auto justify-end">
-
+                        class="flex items-center gap-1.5 xs:gap-2 sm:gap-3 shrink-0">
+                        <!-- SOUND TOGGLE -->
+                        <button onclick="toggleEffect('sound')" id="btn-sound"
+                            class="effect-btn group flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-200"
+                            title="Toggle Sound">
+                            <span
+                                class="text-base xs:text-lg sm:text-xl">🔊</span>
+                            <div class="slash-line"></div>
+                        </button>
+                        <!-- CONFETTI TOGGLE -->
+                        <button onclick="toggleEffect('confetti')"
+                            id="btn-confetti"
+                            class="effect-btn group flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-200"
+                            title="Toggle Confetti">
+                            <span
+                                class="text-base xs:text-lg sm:text-xl">🎉</span>
+                            <div class="slash-line"></div>
+                        </button>
+                        <!-- DIVIDER -->
                         <div
-                            class="relative group flex-1 sm:flex-none sm:w-auto">
-                            <select id="paper-select" onchange="renderQuiz()"
-                                class="w-full sm:w-auto appearance-none bg-slate-900 text-slate-100 border border-slate-700 hover:border-blue-400 pl-4 pr-10 py-2 rounded-lg text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all cursor-pointer shadow-sm">
-                                <option value="1">Set 1 (15 Qs)</option>
-                                <option value="2">Set 2 (15 Qs)</option>
-                                <option value="3">Set 3 (15 Qs)</option>
-                                <option value="4">Set 4 (15 Qs)</option>
-                                <option value="5">Set 5 (15 Qs)</option>
-                                <option value="6">Set 6 (15 Qs)</option>
-                                <option value="7">Set 7 (15 Qs)</option>
-                                <option value="8">Set 8 (15 Qs)</option>
-                                <option value="10">Set 10 (15 Qs)</option>
-                                <option value="11">Set 11 (15 Qs)</option>
-                                <option value="12">Set 12 (15 Qs)</option>
-                                <option value="13">Set 13 (21 Qs)</option>
-                            </select>
-                            <div
-                                class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-400 group-hover:text-blue-400 transition-colors">
-                                <svg class="fill-current h-4 w-4"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20"><path
-                                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
-                            </div>
-                        </div>
-
-                        <a href="index.html"
-                            class="group flex items-center justify-center w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 hover:border-blue-500 hover:bg-blue-500/10 transition-all duration-300 shadow-lg hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] shrink-0"
-                            title="Back to Home">
+                            class="w-px h-6 sm:h-8 bg-slate-700 mx-0.5 sm:mx-1"></div>
+                        <!-- HOME BUTTON -->
+                        <a href="#" onclick="window.location.reload()"
+                            class="group flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-400 hover:text-white"
+                            title="Go to Home">
                             <svg xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24" fill="currentColor"
-                                class="w-5 h-5 text-slate-400 group-hover:text-blue-400 transition-colors"><path
-                                    d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" /><path
-                                    d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" /></svg>
+                                class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2"
+                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
                         </a>
+                        <!-- TOOLS TOGGLE -->
+                        <button onclick="toggleMenu()" id="menu-toggle-btn"
+                            class="group flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 xs:px-3 xs:py-2 sm:px-5 sm:py-2.5 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shrink-0 shadow-lg cursor-pointer">
+                            <span
+                                class="text-[10px] xs:text-xs sm:text-sm font-bold text-slate-300 group-hover:text-white tracking-wide">TOOLS</span>
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="h-3.5 w-3.5 sm:h-5 sm:w-5 text-slate-400 group-hover:text-blue-400"
+                                fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2"
+                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </header>
 
-            <!-- Progress Bar -->
-            <div class="w-full h-1.5 bg-slate-800">
-                <div id="progress-fill"
-                    class="h-full bg-gradient-to-r from-blue-500 to-emerald-400 w-0 shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+            <!-- Progress Bar Removed -->
+
+            <!-- SLIDING MENU -->
+            <div id="teacher-menu"
+                class="absolute top-[100%] left-0 w-full bg-[#0f172a] border-b border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-40 py-4 px-3 md:py-8 md:px-6">
+                <!-- GRID SYSTEM -->
+                <div
+                    class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10">
+                    <!-- SECTION 1: Standard Sets -->
+                    <div
+                        class="col-span-2 md:col-span-1 space-y-2 md:space-y-4">
+                        <h3
+                            class="text-purple-400 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Select
+                            Set</h3>
+                        <div id="set-grid" class="grid grid-cols-5 gap-2"></div>
+                    </div>
+                    <!-- SECTION 2: Filters -->
+                    <div class="col-span-1 space-y-2 md:space-y-4">
+                        <h3
+                            class="text-yellow-400 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Global
+                            Filter</h3>
+                        <div
+                            class="flex md:grid md:grid-cols-2 gap-2 md:gap-4 h-10 md:h-auto">
+                            <button onclick="setMode('odd')" id="btn-odd"
+                                class="flex-1 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-lg md:rounded-xl hover:text-white hover:bg-slate-700 hover:border-indigo-500 flex items-center justify-center transition-all text-sm md:text-5xl">O</button>
+                            <button onclick="setMode('even')" id="btn-even"
+                                class="flex-1 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-lg md:rounded-xl hover:text-white hover:bg-slate-700 hover:border-indigo-500 flex items-center justify-center transition-all text-sm md:text-5xl">E</button>
+                        </div>
+                    </div>
+                    <!-- SECTION 3: Random -->
+                    <div class="col-span-1 space-y-2 md:space-y-4">
+                        <h3
+                            class="text-indigo-500 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Random</h3>
+                        <div class="flex flex-col gap-2 md:gap-3">
+                            <div class="flex gap-2 h-10 md:h-auto">
+                                <div class="relative w-12 md:w-24 shrink-0">
+                                    <input type="number" id="random-count"
+                                        placeholder="10" value="10"
+                                        class="w-full h-full bg-slate-800 border border-slate-700 rounded-lg pl-1 pr-1 md:pl-3 md:pr-2 text-white font-bold focus:border-emerald-500 focus:outline-none text-center text-xs md:text-base">
+                                </div>
+                                <button onclick="generateRandom()"
+                                    id="btn-random"
+                                    class="flex-1 md:py-3 bg-emerald-900/10 hover:bg-emerald-600 border border-emerald-900 hover:border-emerald-500 text-emerald-500 hover:text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 text-xs md:text-base px-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-4 w-4 md:h-5 md:w-5"
+                                        fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                    </svg>
+                                    <span>GENERATE</span>
+                                </button>
+                            </div>
+                            <p
+                                class="hidden md:block text-slate-500 text-[11px] leading-relaxed">Generates
+                                a unique test from the entire pool of questions.
+                                Options are automatically shuffled.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Quiz Container -->
-        <!-- Reduced py-6 to py-4 -->
+        <!-- MAIN CONTENT -->
         <main id="quiz-container"
-            class="w-[95%] max-w-[1920px] mx-auto px-4 py-4 quiz-columns">
-            <!-- Questions will be injected here by JS -->
+            class="w-full max-w-[1920px] mx-auto px-4 flex-grow quiz-columns pt-6">
+            <!-- Questions injected here -->
         </main>
 
         <!-- Watermark -->
         <div
             class="fixed bottom-3 w-full text-center pointer-events-none select-none z-0">
             <p
-                class="text-slate-600 opacity-40 text-[10px] font-bold tracking-[0.2em] uppercase">
-                Designed by Subham Kumar Mallick
-            </p>
+                class="text-slate-600 opacity-40 text-[10px] font-bold tracking-[0.2em] uppercase">Designed
+                by Subham Kumar Mallick</p>
         </div>
 
         <script>
@@ -425,88 +517,270 @@
             ]
         };
 
+        // --- GLOBAL LOGIC ---
+        let currentMode = 'set';
+        let currentSetId = "1";
+        let activeQuestions = [];
+        let allQuestionsFlattened = [];
+
+        // Effect States
+        let soundEnabled = true;
+        let confettiEnabled = true;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // 1. INITIALIZE
+        function init() {
+            // Flatten all papers
+            Object.values(papers).forEach(set => {
+                allQuestionsFlattened = [...allQuestionsFlattened, ...set];
+            });
+
+            // Generate Set Buttons
+            const grid = document.getElementById('set-grid');
+            const availableSets = Object.keys(papers).sort((a,b) => parseInt(a)-parseInt(b));
+            
+            availableSets.forEach(setId => {
+                const btn = document.createElement('button');
+                btn.id = `btn-set-${setId}`;
+                btn.onclick = () => selectSet(setId);
+                btn.className = "py-2 md:py-3 bg-slate-800 border border-slate-700 text-slate-400 font-bold rounded-lg hover:text-white hover:bg-slate-700 hover:border-slate-400 transition-all text-xs md:text-base";
+                btn.innerHTML = `<span class="md:hidden">${setId}</span><span class="hidden md:inline">Set ${setId}</span>`;
+                grid.appendChild(btn);
+            });
+
+            selectSet("1");
+        }
+
+        // 2. TOGGLES
+        function toggleMenu() { document.getElementById('teacher-menu').classList.toggle('open'); }
+        function closeMenu() { document.getElementById('teacher-menu').classList.remove('open'); }
+        function toggleEffect(type) {
+            if (type === 'sound') {
+                soundEnabled = !soundEnabled;
+                document.getElementById('btn-sound').classList.toggle('effect-disabled', !soundEnabled);
+            } else if (type === 'confetti') {
+                confettiEnabled = !confettiEnabled;
+                document.getElementById('btn-confetti').classList.toggle('effect-disabled', !confettiEnabled);
+            }
+        }
+
+        // 3. SOUND ENGINE
+        function playTone(freq, type, duration) {
+            if (!soundEnabled) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = type;
+            osc.frequency.value = freq;
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+            osc.stop(audioCtx.currentTime + duration);
+        }
+        function playCorrectSound() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            playTone(800, 'sine', 0.1); 
+            setTimeout(() => playTone(1200, 'sine', 0.2), 100);
+        }
+        function playWrongSound() {
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            playTone(200, 'sawtooth', 0.3);
+        }
+        function triggerConfetti() {
+            if (!confettiEnabled) return;
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        }
+
+        // 4. LOGIC HANDLERS
+        function updateButtonStyles() {
+            document.querySelectorAll('[id^="btn-set-"], #btn-odd, #btn-even, #btn-random').forEach(b => b.classList.remove('btn-active'));
+            if (currentMode === 'set') {
+                const btn = document.getElementById(`btn-set-${currentSetId}`);
+                if(btn) btn.classList.add('btn-active');
+            } else if (currentMode === 'odd') {
+                document.getElementById('btn-odd').classList.add('btn-active');
+            } else if (currentMode === 'even') {
+                document.getElementById('btn-even').classList.add('btn-active');
+            } else if (currentMode === 'random') {
+                document.getElementById('btn-random').classList.add('btn-active');
+            }
+        }
+
+        function selectSet(setId) {
+            currentMode = 'set';
+            currentSetId = setId;
+            activeQuestions = [...papers[setId]];
+            updateButtonStyles();
+            renderQuiz();
+            closeMenu();
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            if (mode === 'odd') activeQuestions = allQuestionsFlattened.filter((_, i) => (i + 1) % 2 !== 0);
+            else if (mode === 'even') activeQuestions = allQuestionsFlattened.filter((_, i) => (i + 1) % 2 === 0);
+            updateButtonStyles();
+            renderQuiz();
+            closeMenu();
+        }
+
+        function generateRandom() {
+            const countInput = document.getElementById('random-count');
+            let count = parseInt(countInput.value) || 10;
+            
+            // Fix: Changed limit from 50 to total available questions
+            if (count > allQuestionsFlattened.length) count = allQuestionsFlattened.length;
+            if (count < 1) count = 1;
+
+            const shuffled = [...allQuestionsFlattened];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            activeQuestions = shuffled.slice(0, count);
+            currentMode = 'random';
+            updateButtonStyles();
+            renderQuiz();
+            closeMenu();
+        }
+
+        function shuffleArray(array) {
+            const newArr = [...array];
+            for (let i = newArr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+            }
+            return newArr;
+        }
+
+        // 5. RENDERER
         function renderQuiz() {
             const container = document.getElementById('quiz-container');
-            const paperSelect = document.getElementById('paper-select');
-            const selectedPaperId = paperSelect.value;
-            const currentQuestions = papers[selectedPaperId];
-            
             container.innerHTML = '';
-            
-            // Reset Progress
-            updateProgress(0, currentQuestions.length);
-            
+            // updateProgress call removed
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            currentQuestions.forEach((item, i) => {
+            activeQuestions.forEach((item, i) => {
                 const questionCard = document.createElement('div');
-                // Reduced bottom margin from mb-6 to mb-4
-                questionCard.className = "bg-[#1e293b] rounded-xl border border-slate-700/50 shadow-lg overflow-hidden mb-4 break-inside-avoid inline-block w-full";
+                questionCard.className = "bg-[#1e293b] rounded-xl border border-slate-700/50 shadow-lg overflow-hidden break-inside-avoid inline-block w-full";
+                questionCard.setAttribute('data-answered', 'false'); // Track status
                 
                 const qContent = document.createElement('div');
-                qContent.className = "p-4 md:p-5 flex gap-3 md:gap-4 items-baseline";
+                qContent.className = "p-4 md:p-5 flex gap-3 md:gap-4 items-baseline"; // Reverted to row flex for inline layout
                 
+                // Number
                 const qNum = document.createElement('span');
                 qNum.className = "font-black text-[#38bdf8] text-xl md:text-2xl min-w-[1.8rem]";
                 qNum.textContent = `${i + 1}.`;
                 
+                // Text Container
                 const textContainer = document.createElement('div');
                 textContainer.className = "text-white font-bold text-lg md:text-xl leading-snug tracking-wide flex-1";
                 
-                let processedText = item.q.replace(/_{2,}|\.{3,}|…/g, '___');
-                const parts = processedText.split('___');
+                // Identify blank ID for updating later
+                const blankId = `blank-${i}`;
                 
-                if (parts.length > 1) {
-                    textContainer.innerHTML = '';
-                    textContainer.appendChild(document.createTextNode(parts[0]));
-                    
-                    // The Blank Container
-                    const blankSpan = document.createElement('span');
-                    blankSpan.className = "blank-space";
-                    
-                    // The "Hidden" Answer (Floats on top)
-                    const answerSpan = document.createElement('span');
-                    answerSpan.className = "answer-text";
-                    answerSpan.textContent = item.options[item.answer];
-                    
-                    blankSpan.appendChild(answerSpan);
-                    
-                    blankSpan.onclick = function() {
-                        this.classList.toggle('revealed');
-                        // Calculate progress based on how many are revealed
-                        const total = currentQuestions.length;
-                        const revealedCount = document.querySelectorAll('.blank-space.revealed').length;
-                        updateProgress(revealedCount, total);
-                    };
-                    textContainer.appendChild(blankSpan);
-                    
-                    textContainer.appendChild(document.createTextNode(parts[1]));
-                    
-                    const hintSpan = document.createElement('span');
-                    hintSpan.className = "hint-text";
-                    hintSpan.textContent = `(${item.options.join(' / ')})`;
-                    textContainer.appendChild(hintSpan);
-                    
-                } else {
-                    textContainer.textContent = item.q;
+                // Replace patterns like "______" or "..." or "…" with a styled span
+                let processedText = item.q.replace(/_{2,}|\.{3,}|…/g, `<span id="${blankId}" class="sentence-blank">_______</span>`);
+                
+                // Set HTML text first
+                textContainer.innerHTML = processedText;
+
+                // --- Option Buttons (Inline) ---
+                const btnContainer = document.createElement('span'); // Changed to span for inline flow
+                btnContainer.className = "inline-flex flex-wrap gap-2 ml-3 align-baseline"; 
+
+                // Prepare Logic
+                const correctText = item.options[item.answer];
+                let optionObjects = item.options.map(opt => ({ text: opt, isCorrect: opt === correctText }));
+                
+                // Shuffle Options locally for display
+                for (let j = optionObjects.length - 1; j > 0; j--) {
+                    const k = Math.floor(Math.random() * (j + 1));
+                    [optionObjects[j], optionObjects[k]] = [optionObjects[k], optionObjects[j]];
                 }
+
+                optionObjects.forEach(optObj => {
+                    const btn = document.createElement('button');
+                    // Compact pill buttons for inline display
+                    btn.className = "px-3 py-1 rounded-full border border-slate-600 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm transition-all duration-200 active:scale-95 shadow-sm align-middle";
+                    btn.textContent = optObj.text;
+                    
+                    btn.onclick = (e) => handleSelection(e.target, optObj, blankId, btnContainer, questionCard);
+                    btnContainer.appendChild(btn);
+                });
+
+                // Append buttons at the end of the text container
+                textContainer.appendChild(btnContainer);
 
                 qContent.appendChild(qNum);
                 qContent.appendChild(textContainer);
-
                 questionCard.appendChild(qContent);
                 container.appendChild(questionCard);
             });
         }
-        
-        function updateProgress(count, total) {
-            const percentage = (count / total) * 100;
-            const bar = document.getElementById('progress-fill');
-            bar.style.width = `${percentage}%`;
+
+        function handleSelection(btn, optObj, blankId, container, card) {
+            // If card is already answered correctly, prevent further interaction? 
+            // Or allow retries? User said "professional". Usually one correct answer locks it or marks it done.
+            // Let's allow changing answer if it was wrong, but once correct, lock it.
+            if (card.getAttribute('data-answered') === 'true') return;
+
+            if (optObj.isCorrect) {
+                // 1. Style the Button (Green)
+                btn.className = "px-3 py-1 rounded-full border border-emerald-500 bg-emerald-500/20 text-emerald-400 font-bold text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)] animate-pop pointer-events-none align-middle";
+                
+                // 2. Update the Blank in text
+                const blank = document.getElementById(blankId);
+                if (blank) {
+                    blank.textContent = optObj.text;
+                    blank.classList.add('filled');
+                }
+
+                // 3. Mark card as answered
+                card.setAttribute('data-answered', 'true');
+
+                // 4. Disable other buttons
+                const siblings = container.querySelectorAll('button');
+                siblings.forEach(b => {
+                    if (b !== btn) {
+                        b.disabled = true;
+                        b.classList.add('opacity-50', 'cursor-not-allowed');
+                    }
+                });
+
+                // 5. Effects
+                playCorrectSound();
+                triggerConfetti();
+                
+                // 6. Progress logic removed
+
+            } else {
+                // 1. Style Button (Red & Shake)
+                btn.className = "px-3 py-1 rounded-full border border-red-500 bg-red-500/20 text-red-400 font-semibold text-sm animate-shake align-middle";
+                
+                // 2. Disable this specific wrong button so they don't click it again immediately
+                btn.disabled = true;
+                
+                // 3. Effects
+                playWrongSound();
+            }
         }
+        
+        // updateProgress functions removed
 
-        renderQuiz();
+        // Global Click Listener for closing menu
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('teacher-menu');
+            const toggleBtn = document.getElementById('menu-toggle-btn');
+            if (menu.classList.contains('open') && !menu.contains(event.target) && !toggleBtn.contains(event.target)) {
+                closeMenu();
+            }
+        });
 
-    </script>
+        // Start
+        init();
+
+        </script>
     </body>
 </html>
