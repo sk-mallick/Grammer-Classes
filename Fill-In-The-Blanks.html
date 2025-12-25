@@ -6,20 +6,15 @@
         <title>Syntax Practice - Classroom Edition</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <!-- Confetti Library -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-            rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
         <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    screens: {
-                        'xs': '375px',
-                    },
+                    screens: { 'xs': '375px' },
                     colors: {
                         slate: {
                             850: '#1e293b',
@@ -51,36 +46,29 @@
         <style>
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: #020617; /* Slate 950 */
+            background-color: #020617; 
             color: #ffffff; 
         }
 
-        /* Hide number input arrows/spinners */
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { 
             -webkit-appearance: none; 
             margin: 0; 
         }
-        input[type=number] {
-            -moz-appearance: textfield; /* Firefox */
-        }
+        input[type=number] { -moz-appearance: textfield; }
 
         .quiz-columns {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem; /* Standardized gap */
+            gap: 0.75rem;
         }
 
-        /* Menu Animation */
         #teacher-menu {
             transform: translateY(-100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        #teacher-menu.open {
-            transform: translateY(0);
-        }
+        #teacher-menu.open { transform: translateY(0); }
 
-        /* Active Button State for Tools Menu */
         .btn-active {
             background-color: #16a34a !important;
             border-color: #22c55e !important;
@@ -88,11 +76,7 @@
             box-shadow: 0 0 15px rgba(22, 163, 74, 0.4) !important;
         }
 
-        /* Effect Toggle Styles */
-        .effect-btn {
-            position: relative;
-            overflow: hidden;
-        }
+        .effect-btn { position: relative; overflow: hidden; }
         
         .slash-line {
             position: absolute;
@@ -108,23 +92,17 @@
             z-index: 10;
         }
         
-        .effect-disabled .slash-line {
-            display: block;
-        }
+        .effect-disabled .slash-line { display: block; }
         .effect-disabled {
             opacity: 0.7;
             background-color: #1e293b !important;
         }
         
-        /* Removed progress-fill style */
-
-        /* Blank Space in Sentence */
         .sentence-blank {
             display: inline-block;
-            /* FIX APPLIED: Increased min-width to prevent shrinking when filled */
             min-width: 100px;
             border-bottom-width: 2px;
-            border-color: #64748b; /* slate-500 */
+            border-color: #64748b;
             color: transparent;
             text-align: center;
             padding: 0 4px;
@@ -133,7 +111,7 @@
         }
         
         .sentence-blank.filled {
-            color: #34d399; /* emerald-400 */
+            color: #34d399;
             border-color: #34d399;
         }
     </style>
@@ -143,145 +121,83 @@
 
         <!-- HEADER -->
         <div class="fixed top-0 left-0 w-full z-50">
-            <header
-                class="bg-[#020617]/95 backdrop-blur-md shadow-2xl border-b border-slate-800 relative z-50">
-                <div
-                    class="w-full max-w-[98%] mx-auto px-3 py-2 sm:px-6 sm:py-3 flex justify-between items-center gap-2 sm:gap-4 flex-nowrap">
+            <header class="bg-[#020617]/95 backdrop-blur-md shadow-2xl border-b border-slate-800 relative z-50">
+                <div class="w-full max-w-[98%] mx-auto px-3 py-2 sm:px-6 sm:py-3 flex justify-between items-center gap-2 sm:gap-4 flex-nowrap">
 
                     <!-- Title Section -->
-                    <div
-                        class="flex items-stretch gap-2 sm:gap-4 self-center min-w-0">
-                        <div
-                            class="w-1 sm:w-1.5 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] self-stretch shrink-0"></div>
-
+                    <div class="flex items-stretch gap-2 sm:gap-4 self-center min-w-0">
+                        <div class="w-1 sm:w-1.5 bg-blue-500 rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)] self-stretch shrink-0"></div>
                         <div class="flex flex-col justify-center min-w-0">
-                            <h1
-                                class="text-sm xs:text-base sm:text-xl md:text-2xl font-black tracking-wide text-white uppercase leading-none whitespace-nowrap overflow-hidden text-ellipsis">
-                                SYNTAX <span
-                                    class="text-blue-400 hidden xs:inline">PRACTICE</span>
+                            <h1 class="text-sm xs:text-base sm:text-xl md:text-2xl font-black tracking-wide text-white uppercase leading-none whitespace-nowrap overflow-hidden text-ellipsis">
+                                SYNTAX <span class="text-blue-400 hidden xs:inline">PRACTICE</span>
                             </h1>
-                            <p
-                                class="text-[9px] xs:text-[10px] sm:text-xs md:text-sm font-bold text-slate-400 tracking-[0.15em] mt-0.5 sm:mt-1 uppercase leading-tight truncate">
+                            <p class="text-[9px] xs:text-[10px] sm:text-xs md:text-sm font-bold text-slate-400 tracking-[0.15em] mt-0.5 sm:mt-1 uppercase leading-tight truncate">
                                 By Chiranjibi Sir
                             </p>
                         </div>
                     </div>
 
                     <!-- Right Side Controls -->
-                    <div
-                        class="flex items-center gap-1.5 xs:gap-2 sm:gap-3 shrink-0">
-                        <!-- SOUND TOGGLE -->
-                        <button onclick="toggleEffect('sound')" id="btn-sound"
-                            class="effect-btn group flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-200"
-                            title="Toggle Sound">
-                            <span
-                                class="text-base xs:text-lg sm:text-xl">🔊</span>
+                    <div class="flex items-center gap-1.5 xs:gap-2 sm:gap-3 shrink-0">
+                        <button onclick="toggleEffect('sound')" id="btn-sound" class="effect-btn group flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-200" title="Toggle Sound">
+                            <span class="text-base xs:text-lg sm:text-xl">🔊</span>
                             <div class="slash-line"></div>
                         </button>
-                        <!-- CONFETTI TOGGLE -->
-                        <button onclick="toggleEffect('confetti')"
-                            id="btn-confetti"
-                            class="effect-btn group flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-200"
-                            title="Toggle Confetti">
-                            <span
-                                class="text-base xs:text-lg sm:text-xl">🎉</span>
+                        <button onclick="toggleEffect('confetti')" id="btn-confetti" class="effect-btn group flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-200" title="Toggle Confetti">
+                            <span class="text-base xs:text-lg sm:text-xl">🎉</span>
                             <div class="slash-line"></div>
                         </button>
-                        <!-- DIVIDER -->
-                        <div
-                            class="w-px h-6 sm:h-8 bg-slate-700 mx-0.5 sm:mx-1"></div>
-                        <!-- HOME BUTTON -->
-                        <a href="index.html" onclick="window.location.reload()"
-                            class="group flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-400 hover:text-white"
-                            title="Go to Home">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                class="h-4 w-4 sm:h-5 sm:w-5" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="2"
-                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        <div class="w-px h-6 sm:h-8 bg-slate-700 mx-0.5 sm:mx-1"></div>
+                        <a href="#" onclick="window.location.reload()" class="group flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shadow-lg text-slate-400 hover:text-white" title="Go to Home">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                             </svg>
                         </a>
-                        <!-- TOOLS TOGGLE -->
-                        <button onclick="toggleMenu()" id="menu-toggle-btn"
-                            class="group flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 xs:px-3 xs:py-2 sm:px-5 sm:py-2.5 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shrink-0 shadow-lg cursor-pointer">
-                            <span
-                                class="text-[10px] xs:text-xs sm:text-sm font-bold text-slate-300 group-hover:text-white tracking-wide">TOOLS</span>
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                class="h-3.5 w-3.5 sm:h-5 sm:w-5 text-slate-400 group-hover:text-blue-400"
-                                fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="2"
-                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                <path stroke-linecap="round"
-                                    stroke-linejoin="round" stroke-width="2"
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <button onclick="toggleMenu()" id="menu-toggle-btn" class="group flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 xs:px-3 xs:py-2 sm:px-5 sm:py-2.5 bg-slate-800 border border-slate-700 rounded-lg hover:border-blue-500 hover:bg-slate-700 transition-all shrink-0 shadow-lg cursor-pointer">
+                            <span class="text-[10px] xs:text-xs sm:text-sm font-bold text-slate-300 group-hover:text-white tracking-wide">TOOLS</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 sm:h-5 sm:w-5 text-slate-400 group-hover:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </button>
                     </div>
                 </div>
             </header>
 
-            <!-- Progress Bar Removed -->
-
             <!-- SLIDING MENU -->
-            <div id="teacher-menu"
-                class="absolute top-[100%] left-0 w-full bg-[#0f172a] border-b border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-40 py-4 px-3 md:py-8 md:px-6">
-                <!-- GRID SYSTEM -->
-                <div
-                    class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10">
+            <div id="teacher-menu" class="absolute top-[100%] left-0 w-full bg-[#0f172a] border-b border-slate-800 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-40 py-4 px-3 md:py-8 md:px-6">
+                <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10">
                     <!-- SECTION 1: Standard Sets -->
-                    <div
-                        class="col-span-2 md:col-span-1 space-y-2 md:space-y-4">
-                        <h3
-                            class="text-purple-400 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Select
-                            Set</h3>
+                    <div class="col-span-2 md:col-span-1 space-y-2 md:space-y-4">
+                        <h3 class="text-purple-400 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Select Set</h3>
                         <div id="set-grid" class="grid grid-cols-5 gap-2"></div>
                     </div>
                     <!-- SECTION 2: Filters -->
                     <div class="col-span-1 space-y-2 md:space-y-4">
-                        <h3
-                            class="text-yellow-400 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Global
-                            Filter</h3>
-                        <div
-                            class="flex md:grid md:grid-cols-2 gap-2 md:gap-4 h-10 md:h-auto">
-                            <button onclick="setMode('odd')" id="btn-odd"
-                                class="flex-1 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-lg md:rounded-xl hover:text-white hover:bg-slate-700 hover:border-indigo-500 flex items-center justify-center transition-all text-sm md:text-5xl">O</button>
-                            <button onclick="setMode('even')" id="btn-even"
-                                class="flex-1 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-lg md:rounded-xl hover:text-white hover:bg-slate-700 hover:border-indigo-500 flex items-center justify-center transition-all text-sm md:text-5xl">E</button>
+                        <h3 class="text-yellow-400 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">View Filter</h3>
+                        <div class="flex md:grid md:grid-cols-2 gap-2 md:gap-4 h-10 md:h-auto">
+                            <button onclick="setFilter('odd')" id="btn-odd" class="flex-1 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-lg md:rounded-xl hover:text-white hover:bg-slate-700 hover:border-indigo-500 flex items-center justify-center transition-all text-sm md:text-5xl">O</button>
+                            <button onclick="setFilter('even')" id="btn-even" class="flex-1 md:py-8 bg-slate-800 border border-slate-700 text-slate-400 font-black rounded-lg md:rounded-xl hover:text-white hover:bg-slate-700 hover:border-indigo-500 flex items-center justify-center transition-all text-sm md:text-5xl">E</button>
                         </div>
                     </div>
                     <!-- SECTION 3: Random -->
                     <div class="col-span-1 space-y-2 md:space-y-4">
-                        <h3
-                            class="text-indigo-500 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Random</h3>
+                        <h3 class="text-indigo-500 text-xs font-black uppercase tracking-widest border-b border-slate-800 pb-2">Random</h3>
                         <div class="flex flex-col gap-2 md:gap-3">
                             <div class="flex gap-2 h-10 md:h-auto">
                                 <div class="relative w-12 md:w-24 shrink-0">
-                                    <input type="number" id="random-count"
-                                        placeholder="10" value="10"
-                                        class="w-full h-full bg-slate-800 border border-slate-700 rounded-lg pl-1 pr-1 md:pl-3 md:pr-2 text-white font-bold focus:border-emerald-500 focus:outline-none text-center text-xs md:text-base">
+                                    <input type="number" id="random-count" placeholder="10" value="10" class="w-full h-full bg-slate-800 border border-slate-700 rounded-lg pl-1 pr-1 md:pl-3 md:pr-2 text-white font-bold focus:border-emerald-500 focus:outline-none text-center text-xs md:text-base">
                                 </div>
-                                <button onclick="generateRandom()"
-                                    id="btn-random"
-                                    class="flex-1 md:py-3 bg-emerald-900/10 hover:bg-emerald-600 border border-emerald-900 hover:border-emerald-500 text-emerald-500 hover:text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 text-xs md:text-base px-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        class="h-4 w-4 md:h-5 md:w-5"
-                                        fill="none" viewBox="0 0 24 24"
-                                        stroke="currentColor">
-                                        <path stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            stroke-width="2"
-                                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                <button onclick="generateRandom()" id="btn-random" class="flex-1 md:py-3 bg-emerald-900/10 hover:bg-emerald-600 border border-emerald-900 hover:border-emerald-500 text-emerald-500 hover:text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 text-xs md:text-base px-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 md:h-5 md:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                     </svg>
                                     <span>GENERATE</span>
                                 </button>
                             </div>
-                            <p
-                                class="hidden md:block text-slate-500 text-[11px] leading-relaxed">Generates
-                                a unique test from the entire pool of questions.
-                                Options are automatically shuffled.</p>
+                            <p class="hidden md:block text-slate-500 text-[11px] leading-relaxed">
+                                Generates a unique test from the entire pool of questions. Options are automatically shuffled.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -289,21 +205,15 @@
         </div>
 
         <!-- MAIN CONTENT -->
-        <main id="quiz-container"
-            class="w-full max-w-[1920px] mx-auto px-4 flex-grow quiz-columns pt-6">
+        <main id="quiz-container" class="w-full max-w-[1920px] mx-auto px-4 flex-grow quiz-columns pt-6">
             <!-- Questions injected here -->
         </main>
 
-        <!-- Watermark -->
-        <div
-            class="fixed bottom-3 w-full text-center pointer-events-none select-none z-0">
-            <p
-                class="text-slate-600 opacity-40 text-[10px] font-bold tracking-[0.2em] uppercase">Designed
-                by Subham Kumar Mallick</p>
+        <div class="fixed bottom-3 w-full text-center pointer-events-none select-none z-0">
+            <p class="text-slate-600 opacity-40 text-[10px] font-bold tracking-[0.2em] uppercase">Designed by Subham Kumar Mallick</p>
         </div>
 
         <script>
-        // Data Structure
         const papers = {
             "1": [
                 { q: "One of the pupils in our class ______ a car.", options: ["own", "owns"], answer: 1 },
@@ -517,25 +427,24 @@
             ]
         };
 
-        // --- GLOBAL LOGIC ---
-        let currentMode = 'set';
+        // --- GLOBAL STATE ---
+        let currentMode = 'set'; 
         let currentSetId = "1";
-        let activeQuestions = [];
+        let activeFilter = 'all'; 
+        
+        let baseQuestions = []; // The selected set or the random list
+        let filteredQuestions = []; // The list after applying O/E filter
+        
         let allQuestionsFlattened = [];
-
-        // Effect States
         let soundEnabled = true;
         let confettiEnabled = true;
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // 1. INITIALIZE
         function init() {
-            // Flatten all papers
             Object.values(papers).forEach(set => {
                 allQuestionsFlattened = [...allQuestionsFlattened, ...set];
             });
 
-            // Generate Set Buttons
             const grid = document.getElementById('set-grid');
             const availableSets = Object.keys(papers).sort((a,b) => parseInt(a)-parseInt(b));
             
@@ -551,9 +460,10 @@
             selectSet("1");
         }
 
-        // 2. TOGGLES
+        // Toggles
         function toggleMenu() { document.getElementById('teacher-menu').classList.toggle('open'); }
         function closeMenu() { document.getElementById('teacher-menu').classList.remove('open'); }
+        
         function toggleEffect(type) {
             if (type === 'sound') {
                 soundEnabled = !soundEnabled;
@@ -564,7 +474,7 @@
             }
         }
 
-        // 3. SOUND ENGINE
+        // Sound Engine
         function playTone(freq, type, duration) {
             if (!soundEnabled) return;
             const osc = audioCtx.createOscillator();
@@ -591,44 +501,34 @@
             confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         }
 
-        // 4. LOGIC HANDLERS
+        // --- FILTERING LOGIC ---
+        
         function updateButtonStyles() {
             document.querySelectorAll('[id^="btn-set-"], #btn-odd, #btn-even, #btn-random').forEach(b => b.classList.remove('btn-active'));
+            
             if (currentMode === 'set') {
                 const btn = document.getElementById(`btn-set-${currentSetId}`);
                 if(btn) btn.classList.add('btn-active');
-            } else if (currentMode === 'odd') {
-                document.getElementById('btn-odd').classList.add('btn-active');
-            } else if (currentMode === 'even') {
-                document.getElementById('btn-even').classList.add('btn-active');
-            } else if (currentMode === 'random') {
+            } else {
                 document.getElementById('btn-random').classList.add('btn-active');
             }
+
+            if (activeFilter === 'odd') document.getElementById('btn-odd').classList.add('btn-active');
+            if (activeFilter === 'even') document.getElementById('btn-even').classList.add('btn-active');
         }
 
         function selectSet(setId) {
             currentMode = 'set';
             currentSetId = setId;
-            activeQuestions = [...papers[setId]];
-            updateButtonStyles();
-            renderQuiz();
-            closeMenu();
-        }
-
-        function setMode(mode) {
-            currentMode = mode;
-            if (mode === 'odd') activeQuestions = allQuestionsFlattened.filter((_, i) => (i + 1) % 2 !== 0);
-            else if (mode === 'even') activeQuestions = allQuestionsFlattened.filter((_, i) => (i + 1) % 2 === 0);
-            updateButtonStyles();
-            renderQuiz();
+            activeFilter = 'all'; 
+            baseQuestions = [...papers[setId]];
+            applyView();
             closeMenu();
         }
 
         function generateRandom() {
             const countInput = document.getElementById('random-count');
             let count = parseInt(countInput.value) || 10;
-            
-            // Fix: Changed limit from 50 to total available questions
             if (count > allQuestionsFlattened.length) count = allQuestionsFlattened.length;
             if (count < 1) count = 1;
 
@@ -637,64 +537,72 @@
                 const j = Math.floor(Math.random() * (i + 1));
                 [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
             }
-            activeQuestions = shuffled.slice(0, count);
+            
             currentMode = 'random';
-            updateButtonStyles();
-            renderQuiz();
+            activeFilter = 'all';
+            baseQuestions = shuffled.slice(0, count);
+            applyView();
             closeMenu();
         }
 
-        function shuffleArray(array) {
-            const newArr = [...array];
-            for (let i = newArr.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
+        function setFilter(filter) {
+            if (activeFilter === filter) {
+                activeFilter = 'all';
+            } else {
+                activeFilter = filter;
             }
-            return newArr;
+            applyView();
         }
 
-        // 5. RENDERER
+        function applyView() {
+            if (activeFilter === 'odd') {
+                filteredQuestions = baseQuestions.filter((_, i) => (i + 1) % 2 !== 0);
+            } else if (activeFilter === 'even') {
+                filteredQuestions = baseQuestions.filter((_, i) => (i + 1) % 2 === 0);
+            } else {
+                filteredQuestions = [...baseQuestions];
+            }
+            
+            updateButtonStyles();
+            renderQuiz();
+        }
+
+        // --- RENDERER ---
+        
         function renderQuiz() {
             const container = document.getElementById('quiz-container');
             container.innerHTML = '';
-            // updateProgress call removed
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            activeQuestions.forEach((item, i) => {
+            filteredQuestions.forEach((item, i) => {
+                // Numbering is now SERIAL (1, 2, 3...) based on the loop index i
+                const displayNum = i + 1;
+
                 const questionCard = document.createElement('div');
                 questionCard.className = "bg-[#1e293b] rounded-xl border border-slate-700/50 shadow-lg overflow-hidden break-inside-avoid inline-block w-full";
-                questionCard.setAttribute('data-answered', 'false'); // Track status
+                questionCard.setAttribute('data-answered', 'false');
                 
                 const qContent = document.createElement('div');
-                qContent.className = "p-4 md:p-5 flex gap-3 md:gap-4 items-baseline"; // Reverted to row flex for inline layout
+                qContent.className = "p-4 md:p-5 flex gap-3 md:gap-4 items-baseline";
                 
-                // Number
                 const qNum = document.createElement('span');
                 qNum.className = "font-black text-[#38bdf8] text-xl md:text-2xl min-w-[1.8rem]";
-                qNum.textContent = `${i + 1}.`;
+                qNum.textContent = `${displayNum}.`;
                 
-                // Text Container
                 const textContainer = document.createElement('div');
                 textContainer.className = "text-white font-bold text-lg md:text-xl leading-snug tracking-wide flex-1";
                 
-                // Identify blank ID for updating later
-                const blankId = `blank-${i}`;
-                
-                // Replace patterns like "______" or "..." or "…" with a styled span
+                const blankId = `blank-${displayNum}`;
                 let processedText = item.q.replace(/_{2,}|\.{3,}|…/g, `<span id="${blankId}" class="sentence-blank">_______</span>`);
-                
-                // Set HTML text first
                 textContainer.innerHTML = processedText;
 
-                // --- Option Buttons (Inline) ---
-                const btnContainer = document.createElement('span'); // Changed to span for inline flow
+                const btnContainer = document.createElement('span');
                 btnContainer.className = "inline-flex flex-wrap gap-2 ml-3 align-baseline"; 
 
-                // Prepare Logic
                 const correctText = item.options[item.answer];
                 let optionObjects = item.options.map(opt => ({ text: opt, isCorrect: opt === correctText }));
                 
-                // Shuffle Options locally for display
+                // Shuffle options locally
                 for (let j = optionObjects.length - 1; j > 0; j--) {
                     const k = Math.floor(Math.random() * (j + 1));
                     [optionObjects[j], optionObjects[k]] = [optionObjects[k], optionObjects[j]];
@@ -702,17 +610,13 @@
 
                 optionObjects.forEach(optObj => {
                     const btn = document.createElement('button');
-                    // Compact pill buttons for inline display
                     btn.className = "px-3 py-1 rounded-full border border-slate-600 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm transition-all duration-200 active:scale-95 shadow-sm align-middle";
                     btn.textContent = optObj.text;
-                    
                     btn.onclick = (e) => handleSelection(e.target, optObj, blankId, btnContainer, questionCard);
                     btnContainer.appendChild(btn);
                 });
 
-                // Append buttons at the end of the text container
                 textContainer.appendChild(btnContainer);
-
                 qContent.appendChild(qNum);
                 qContent.appendChild(textContainer);
                 questionCard.appendChild(qContent);
@@ -721,26 +625,16 @@
         }
 
         function handleSelection(btn, optObj, blankId, container, card) {
-            // If card is already answered correctly, prevent further interaction? 
-            // Or allow retries? User said "professional". Usually one correct answer locks it or marks it done.
-            // Let's allow changing answer if it was wrong, but once correct, lock it.
             if (card.getAttribute('data-answered') === 'true') return;
 
             if (optObj.isCorrect) {
-                // 1. Style the Button (Green)
                 btn.className = "px-3 py-1 rounded-full border border-emerald-500 bg-emerald-500/20 text-emerald-400 font-bold text-sm shadow-[0_0_15px_rgba(16,185,129,0.4)] animate-pop pointer-events-none align-middle";
-                
-                // 2. Update the Blank in text
                 const blank = document.getElementById(blankId);
                 if (blank) {
                     blank.textContent = optObj.text;
                     blank.classList.add('filled');
                 }
-
-                // 3. Mark card as answered
                 card.setAttribute('data-answered', 'true');
-
-                // 4. Disable other buttons
                 const siblings = container.querySelectorAll('button');
                 siblings.forEach(b => {
                     if (b !== btn) {
@@ -748,28 +642,15 @@
                         b.classList.add('opacity-50', 'cursor-not-allowed');
                     }
                 });
-
-                // 5. Effects
                 playCorrectSound();
                 triggerConfetti();
-                
-                // 6. Progress logic removed
-
             } else {
-                // 1. Style Button (Red & Shake)
                 btn.className = "px-3 py-1 rounded-full border border-red-500 bg-red-500/20 text-red-400 font-semibold text-sm animate-shake align-middle";
-                
-                // 2. Disable this specific wrong button so they don't click it again immediately
                 btn.disabled = true;
-                
-                // 3. Effects
                 playWrongSound();
             }
         }
         
-        // updateProgress functions removed
-
-        // Global Click Listener for closing menu
         document.addEventListener('click', function(event) {
             const menu = document.getElementById('teacher-menu');
             const toggleBtn = document.getElementById('menu-toggle-btn');
@@ -778,10 +659,7 @@
             }
         });
 
-        // Start
         init();
-
         </script>
     </body>
 </html>
-
